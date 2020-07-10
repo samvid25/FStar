@@ -69,74 +69,55 @@ let increment_generic
   let old_v = cls.pointer_get r v in
   cls.pointer_upd r v (UInt32.add old_v 1ul)
 
+module Basics = Steel.SteelT.Basics
+
 let u32_pair_get : rw_pointer_get_sig u32_pair u32_pair_ref slu32_pair =
   fun r g_pair ->
-    let Some (Full pair) = read r (Some (Full (Ghost.reveal g_pair))) in
-    pair
+    let (rx, ry) : u32_ref & u32_ref = r in
+    let g_stored = Ghost.hide (Some (MkStoredU32 g_pair.x)) in
+    Basics.h_admit _ _
+
+    (*let x  =
+      Basics.frame #_ #(slu32_pair r g_pair) #(fun _ -> slu32_pair r g_pair)
+       (fun _ -> read rx g_stored)
+       (pts_to ry (Some (MkStoredU32 g_pair.y)))
+    in
+    let y  =
+      Basics.frame #_ #(slu32_pair r g_pair) #(fun _ -> slu32_pair r g_pair)
+       (fun _ -> read ry g_stored)
+       (pts_to rx (Some (MkStoredU32 g_pair.x)))
+    in
+    let Some (MkStoredU32 x) = x in
+    let Some (MkStoredU32 y) = y in
+    let real_val = { x; y} in
+    real_val*)
+
 
 let u32_pair_upd: rw_pointer_upd_sig u32_pair u32_pair_ref slu32_pair =
   fun r g_pair v ->
-    let Some (Full pair) = read r (Some (Full (Ghost.reveal g_pair))) in
-    write r (Some (Full (Ghost.reveal g_pair))) (Some (Full v))
+    Basics.h_admit _ _
 
-let u32_pair_x_field_get
-  : rw_pointer_get_sig UInt32.t u32_pair_x_field_ref slu32_pair_x_field
-  =
-  fun r g_x ->
-    match read r (Some (XField g_x)) with
-    | Some (XField x) -> x
-    | Some (Full pair) -> pair.x
-
-let u32_pair_x_field_upd
-  : rw_pointer_upd_sig UInt32.t u32_pair_x_field_ref slu32_pair_x_field
-  =
-  fun r g_x v ->
-   let fake_stored = Ghost.hide (Some (XField g_x)) in
-   let new_val = Some (XField v) in
-   frame_preserving_intro u32_pair_stored_pcm fake_stored new_val
-     (fun frame -> ())
-     (fun frame ->
-       match frame with
-       | Some (YField fy) ->
-         assert(op u32_pair_stored_pcm frame new_val == Some (Full ({y = fy; x = v})));
-         assume(op u32_pair_stored_pcm frame new_val == new_val)
-       | _ -> ()
-     );
-   write r (Some (XField g_x)) new_val
-
-let u32_pair_y_field_get
-  : rw_pointer_get_sig UInt32.t u32_pair_y_field_ref slu32_pair_y_field
-  =
-  fun r g_y ->
-    match read r (Some (YField g_y)) with
-    | Some (YField y) -> y
-    | Some (Full pair) -> pair.y
-
-let u32_pair_y_field_upd
-  : rw_pointer_upd_sig UInt32.t u32_pair_y_field_ref slu32_pair_y_field
-  =
-  admit()
-
-let recombinable (r: u32_pair_ref) (r12: u32_pair_x_field_ref & u32_pair_y_field_ref) : prop
+let recombinable (r: u32_pair_ref) (r12: u32_pair_ref) : prop
   = admit()
 
 let explose_u32_pair_into_x_y (r: u32_pair_ref) (pair: u32_pair)
-  : SteelT (r12:(u32_pair_x_field_ref & u32_pair_y_field_ref){recombinable r r12})
+  : SteelT (r12:(u32_pair_ref){recombinable r r12})
   (slu32_pair r pair)
   (fun (r1, r2) ->
-    slu32_pair_x_field r1 pair.x `star`
-    slu32_pair_y_field r2 pair.y)
+    pts_to r1 (Some (MkStoredU32 pair.x)) `star`
+    pts_to r2 (Some (MkStoredU32 pair.y)))
   =
   Steel.SteelT.Basics.h_admit _ _
 
+
 let recombine_u32_pair_from_x_y
   (r: u32_pair_ref)
-  (r1: u32_pair_x_field_ref)
+  (r1: u32_ref)
   (v1: UInt32.t)
-  (r2: u32_pair_y_field_ref)
+  (r2: u32_ref)
   (v2: UInt32.t)
   : SteelT unit
-    (slu32_pair_x_field r1 v1 `star` slu32_pair_y_field r2 v2)
+    (pts_to r1 (Some (MkStoredU32 v1)) `star` pts_to r2 (Some (MkStoredU32 v2)))
     (fun _ -> slu32_pair r ({ x = v1; y = v2}))
   =
   Steel.SteelT.Basics.h_admit _ _

@@ -218,60 +218,18 @@ val increment_generic
 /// type ? We have to introduce a new piece of information inside the memory reference, to allow us
 /// to distinguish which part of the reference we are owning inside a thread.
 
+type stored_u32 : Type u#1 =
+  | MkStoredU32: UInt32.t -> stored_u32
 
-type u32_pair_shared =
-| Full of u32_pair
-| XField of UInt32.t
-| YField of UInt32.t
+let u32_ref = Steel.Memory.ref (option stored_u32) Steel.PCM.Base.exclusive_pcm
 
-let u32_pair_stored = option u32_pair_shared
-
-/// Now, we have to define a PCM that will render possible the fact to share the ownership on the
-/// fields of the struct.
-let u32_pair_composable : symrel (u32_pair_stored) = fun a b -> match a, b with
-  | Some a, Some b -> begin
-    match a, b with
-    | XField _, YField _
-    | YField _, XField _ -> True
-    | _ -> False
-  end
-  | _ -> True
-
-/// The compose operation "recombines" the values owned in different memories. Even though each memory
-/// contain a full pair, only the part of the pair designated by the path matters.
-
-let u32_pair_compose
-  (a: u32_pair_stored)
-  (b: u32_pair_stored{a `u32_pair_composable` b})
-  : u32_pair_stored =
-  match a, b with
-  | Some a, Some b -> begin
-    match a, b with
-    | XField x, YField y -> Some (Full ({ x = x; y = y}))
-    | YField y, XField x -> Some (Full ({ x = x; y = y}))
-  end
-  | None, Some _ -> b
-  | Some _, None -> a
-  | None, None -> None
-
-let u32_pair_stored_pcm : pcm u32_pair_stored = {
-  p = {
-    composable = u32_pair_composable;
-    op = u32_pair_compose;
-    one = None;
-  };
-  comm = (fun _ _ -> ());
-  assoc = (fun _ _ _ -> ());
-  assoc_r = (fun _ _ _ -> ());
-  is_unit = (fun _ -> ());
-}
-
-let u32_pair_ref = Steel.Memory.ref u32_pair_stored u32_pair_stored_pcm
+let u32_pair_ref = u32_ref & u32_ref
 
 /// We can now instantiate the pointer typeclass! Let's begin by a pointer to
 
 let slu32_pair (r: u32_pair_ref) (v: u32_pair) : slprop =
-  pts_to r (Some (Full v))
+  let (rx, ry) = r in
+  pts_to rx (Some (MkStoredU32 v.x)) `star` pts_to ry (Some (MkStoredU32 v.y))
 
 val u32_pair_get : rw_pointer_get_sig u32_pair u32_pair_ref slu32_pair
 
@@ -284,62 +242,22 @@ instance u32_pair_pointer : rw_pointer u32_pair = {
   pointer_upd = u32_pair_upd;
 }
 
-/// But we can also instantiate it for the leaves of our structure
-
-let u32_pair_x_field_ref = u32_pair_ref
-
-let slu32_pair_x_field (r: u32_pair_x_field_ref) (v: UInt32.t) : slprop =
-   pts_to r (Some (XField v))
-
-
-val u32_pair_x_field_get
-  : rw_pointer_get_sig UInt32.t u32_pair_x_field_ref slu32_pair_x_field
-
-val u32_pair_x_field_upd
-  : rw_pointer_upd_sig UInt32.t u32_pair_x_field_ref slu32_pair_x_field
-
-instance u32_pair_x_field_pointer : rw_pointer UInt32.t = {
-  pointer_ref = u32_pair_x_field_ref;
-  pointer_slref = slu32_pair_x_field;
-  pointer_get = u32_pair_x_field_get;
-  pointer_upd = u32_pair_x_field_upd;
-}
-
-let u32_pair_y_field_ref = u32_pair_ref
-
-let slu32_pair_y_field (r: u32_pair_y_field_ref) (v: UInt32.t) =
-  pts_to r (Some (YField v))
-
-val u32_pair_y_field_get
-  : rw_pointer_get_sig UInt32.t u32_pair_y_field_ref slu32_pair_y_field
-
-val u32_pair_y_field_upd
-  : rw_pointer_upd_sig UInt32.t u32_pair_y_field_ref slu32_pair_y_field
-
-
-instance u32_pair_y_field_pointer : rw_pointer UInt32.t = {
-  pointer_ref = u32_pair_y_field_ref;
-  pointer_slref = slu32_pair_y_field;
-  pointer_get = u32_pair_y_field_get;
-  pointer_upd = u32_pair_y_field_upd;
-}
-
 (**** explode/recombine *)
 
 /// The explode/recombine functions are specialized to each struct, and to each pattern of struct
 /// explosion that is allowed by the PCM. We'll show here an example for our pair of integers.
 
-val recombinable (r: u32_pair_ref) (r12: u32_pair_x_field_ref & u32_pair_y_field_ref) : prop
+val recombinable (r: u32_pair_ref) (r12: u32_ref & u32_ref) : prop
 [@@ extract_explode u32_pair_pointer ->
-  (u32_pair_x_field_pointer, u32_pair_y_field_pointer) ->
+  (u32_ref, u32_ref) ->
   recombinable
 ]
 val explose_u32_pair_into_x_y (r: u32_pair_ref) (pair: u32_pair)
-  : SteelT (r12:(u32_pair_x_field_ref & u32_pair_y_field_ref){recombinable r r12})
+  : SteelT (r12:(u32_ref & u32_ref){recombinable r r12})
   (slu32_pair r pair)
   (fun (r1, r2) ->
-    slu32_pair_x_field r1 pair.x `star`
-    slu32_pair_y_field r2 pair.y)
+    pts_to r1 (Some (MkStoredU32 pair.x)) `star`
+    pts_to r2 (Some (MkStoredU32 pair.y)))
 
 /// How to implement this function? We should not have to allocate a new ref, instead we're going
 /// to use the same address in memory but in /two different memories/, that we will later join
@@ -348,13 +266,13 @@ val explose_u32_pair_into_x_y (r: u32_pair_ref) (pair: u32_pair)
 /// FieldX path and memoryY will contain the value of the field Y along with FieldY path.
 /// These two memory are composable thanks to the PCM that we've defined for `u32_pair_stored`.
 
-[@@ extract_recombine u32_pair_pointer -> u32_pair_x_field_pointer -> u32_pair_y_field_pointer ]
+[@@ extract_recombine u32_pair_pointer -> u32_ref -> u32_ref ]
 val recombine_u32_pair_from_x_y
   (r: u32_pair_ref)
-  (r1: u32_pair_x_field_ref)
+  (r1: u32_ref)
   (v1: UInt32.t)
-  (r2: u32_pair_y_field_ref)
+  (r2: u32_ref)
   (v2: UInt32.t)
   : SteelT unit
-    (slu32_pair_x_field r1 v1 `star` slu32_pair_y_field r2 v2)
+    (pts_to r1 (Some (MkStoredU32 v1)) `star` pts_to r2 (Some (MkStoredU32 v2)))
     (fun _ -> slu32_pair r ({ x = v1; y = v2}))
