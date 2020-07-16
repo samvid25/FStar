@@ -223,7 +223,7 @@ val recombinable (r: u32_pair_p.pref) (r12: u32_ref & u32_ref) : prop
 ]
 val explose_u32_pair_into_x_y (r: u32_pair_p.pref) (pair: Ghost.erased u32_pair)
   : SteelT (r12:(u32_ref & u32_ref){recombinable r r12})
-  (slu32_pair r pair)
+  (u32_pair_p.pslref r pair)
   (fun (r1, r2) ->
     pts_to r1 full_perm pair.x `Mem.star`
     pts_to r2 full_perm pair.y)
@@ -243,7 +243,7 @@ val recombine_u32_pair_from_x_y
   (r: u32_pair_p.pref)
   (r1: u32_ref)
   (v1: Ghost.erased UInt32.t)
-  (r2: u32_ref)
+  (r2: u32_ref{recombinable r (r1, r2)})
   (v2: Ghost.erased UInt32.t)
   : SteelT unit
     (pts_to r1 full_perm v1 `Mem.star` pts_to r2 full_perm v2)

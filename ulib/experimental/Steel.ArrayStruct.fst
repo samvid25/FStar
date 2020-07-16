@@ -41,35 +41,39 @@ let get_y (r: u32_pair_p.pref) (pair: Ghost.erased u32_pair)
   (u32_pair_p.pslref r pair) (fun x -> u32_pair_p.pslref r pair)
   =
   let (rx, ry) = r in
-  Basics.h_admit _ _
-  //Basics.frame (fun () -> read #UInt32.t #full_perm #pair.y ry) (pts_to rx full_perm pair.x)
+  Basics.h_commute (pts_to rx full_perm pair.x) (pts_to ry full_perm pair.y);
+  let v =  Basics.frame (fun () -> read #UInt32.t #full_perm #pair.y ry) (pts_to rx full_perm pair.x) in
+  Basics.h_commute (pts_to ry full_perm pair.y) (pts_to rx full_perm pair.x);
+  v
 
-let update_x (r: u32_pair_p.pref) (old_pair: Ghost.erased u32_pair) (new_val: UInt32.t)
-    : SteelT unit
-    (u32_pair_p.pslref r old_pair)
-    (fun _ -> u32_pair_p.pslref r ({ old_pair with x = new_val}))
-    =
-    Basics.h_admit _ _
+let update_x (r: u32_pair_p.pref) (pair: Ghost.erased u32_pair) (new_val: UInt32.t)
+  : SteelT unit
+    (u32_pair_p.pslref r pair)
+    (fun _ -> u32_pair_p.pslref r ({ pair with x = new_val}))
+  =
+  let (rx, ry) = r in
+  Basics.frame (fun () -> write #UInt32.t #pair.x rx new_val) (pts_to ry full_perm pair.y)
 
-let recombinable (r: u32_pair_p.pref) (r12: u32_ref & u32_ref) = True
+let recombinable (r: u32_pair_p.pref) (r12: u32_ref & u32_ref) = r == r12
 
 let explose_u32_pair_into_x_y (r: u32_pair_p.pref) (pair: Ghost.erased u32_pair)
   : SteelT (r12:(u32_ref & u32_ref){recombinable r r12})
-  (slu32_pair r pair)
+  (u32_pair_p.pslref r pair)
   (fun (r1, r2) ->
     pts_to r1 full_perm pair.x `Mem.star`
     pts_to r2 full_perm pair.y)
   =
-  Basics.h_admit _ _
+  Basics.change_slprop _ _ (fun _ -> ());
+  Basics.return r
 
 let recombine_u32_pair_from_x_y
   (r: u32_pair_p.pref)
   (r1: u32_ref)
   (v1: Ghost.erased UInt32.t)
-  (r2: u32_ref)
+  (r2: u32_ref{recombinable r (r1, r2)})
   (v2: Ghost.erased UInt32.t)
   : SteelT unit
     (pts_to r1 full_perm v1 `Mem.star` pts_to r2 full_perm v2)
     (fun _ -> slu32_pair r ({ x = v1; y = v2}))
   =
-  Basics.h_admit _ _
+  Basics.change_slprop _ _ (fun _ -> ())
