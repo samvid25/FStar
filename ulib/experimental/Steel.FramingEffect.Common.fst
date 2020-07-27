@@ -1067,6 +1067,8 @@ let rec filter_goals (l:list goal) : Tac (list goal * list goal) =
 
 [@@ resolve_implicits; framing_implicit]
 let init_resolve_tac () : Tac unit =
+  dump_all false "start";
+  if List.Tot.Base.length (goals()) <= 3 then fail "here";
   let slgs, loggs = filter_goals (goals()) in
   set_goals slgs;
   // We first need to solve the trivial equalities to ensure we're not restricting
