@@ -1,5 +1,8 @@
 >> Got issues: [
 GhostImplicits.fst(25,54-25,57): (Error 34) Computed type "Prims.nat" and effect "GHOST" is not compatible with the annotated type "Prims.nat" effect "Tot"
+> In the top-level declaration for `let test3`
+> In the top-level declaration for `[@@expect_failure] let test3`
+> While checking module GhostImplicits
 >>]
 Verified module: GhostImplicits
 All verification conditions discharged successfully

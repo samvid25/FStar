@@ -1,6 +1,9 @@
 >> Got issues: [
 StableErr.fst(26,0-26,20): (Error 298) Q = Prims.l_False
 A query could not be solved internally, and --no_smt was given
+> In the top-level declaration for `let uu___0`
+> In the top-level declaration for `[@@expect_failure] let uu___0`
+> While checking module StableErr
 >>]
 Verified module: StableErr
 All verification conditions discharged successfully

@@ -1,5 +1,9 @@
 >> Got issues: [
-StringNormalization.fst(83,2-83,8): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also StringNormalization.fst(83,9-83,58))
+StringNormalization.fst(83,2-83,8): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___34`
+> In the top-level declaration for `[@@expect_failure] let uu___34`
+> While checking module StringNormalization
+  (see also StringNormalization.fst(83,9-83,58))
 >>]
 Verified module: StringNormalization
 All verification conditions discharged successfully

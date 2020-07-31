@@ -1,38 +1,82 @@
 >> Got issues: [
 Basic.fst(4,13-4,17): (Error 189) Expected expression of type "Prims.int"; got expression "true" of type "Prims.bool"
+> In the top-level declaration for `let uu___0`
+> In the top-level declaration for `[@@expect_failure] let uu___0`
+> While checking module Basic
 >>]
 >> Got issues: [
-Basic.fst(6,38-6,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(6,45-6,50))
+Basic.fst(6,38-6,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___1`
+> In the top-level declaration for `[@@expect_failure] let uu___1`
+> While checking module Basic
+  (see also Basic.fst(6,45-6,50))
 >>]
 >> Got issues: [
-Basic.fst(7,38-7,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(7,45-7,50))
+Basic.fst(7,38-7,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___2`
+> In the top-level declaration for `[@@expect_failure] let uu___2`
+> While checking module Basic
+  (see also Basic.fst(7,45-7,50))
 >>]
 >> Got issues: [
-Basic.fst(8,38-8,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(8,45-8,50))
+Basic.fst(8,38-8,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___4`
+> In the top-level declaration for `[@@expect_failure] let uu___4`
+> While checking module Basic
+  (see also Basic.fst(8,45-8,50))
 >>]
 >> Got issues: [
-Basic.fst(9,38-9,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(9,45-9,50))
+Basic.fst(9,38-9,44): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___6`
+> In the top-level declaration for `[@@expect_failure] let uu___6`
+> While checking module Basic
+  (see also Basic.fst(9,45-9,50))
 >>]
 >> Got issues: [
-Basic.fst(11,38-11,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(11,50-11,55))
+Basic.fst(11,38-11,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___9`
+> In the top-level declaration for `[@@expect_failure] let uu___9`
+> While checking module Basic
+  (see also Basic.fst(11,50-11,55))
 >>]
 >> Got issues: [
-Basic.fst(12,38-12,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(12,50-12,55))
+Basic.fst(12,38-12,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___10`
+> In the top-level declaration for `[@@expect_failure] let uu___10`
+> While checking module Basic
+  (see also Basic.fst(12,50-12,55))
 >>]
 >> Got issues: [
-Basic.fst(13,38-13,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(13,50-13,55))
+Basic.fst(13,38-13,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___12`
+> In the top-level declaration for `[@@expect_failure] let uu___12`
+> While checking module Basic
+  (see also Basic.fst(13,50-13,55))
 >>]
 >> Got issues: [
-Basic.fst(14,38-14,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel (see also Basic.fst(14,50-14,55))
+Basic.fst(14,38-14,49): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let uu___14`
+> In the top-level declaration for `[@@expect_failure] let uu___14`
+> While checking module Basic
+  (see also Basic.fst(14,50-14,55))
 >>]
 >> Got issues: [
 Basic.fst(17,29-17,31): (Error 19) assertion failed (Also see: prims.fst(379,31-379,43))(Other related locations: prims.fst(376,70-376,82)); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let test2`
+> In the top-level declaration for `[@@expect_failure] let test2`
+> While checking module Basic
 >>]
 >> Got issues: [
 Basic.fst(20,29-20,31): (Error 19) assertion failed (Also see: prims.fst(379,31-379,43))(Other related locations: prims.fst(376,70-376,82)); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let test3`
+> In the top-level declaration for `[@@expect_failure] let test3`
+> While checking module Basic
 >>]
 >> Got issues: [
 Basic.fst(23,46-23,48): (Error 19) assertion failed (Also see: prims.fst(379,31-379,43))(Other related locations: prims.fst(376,70-376,82)); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
+> In the top-level declaration for `let test6`
+> In the top-level declaration for `[@@expect_failure] let test6`
+> While checking module Basic
 >>]
 Verified module: Basic
 All verification conditions discharged successfully

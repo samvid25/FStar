@@ -1,5 +1,8 @@
 >> Got issues: [
 ArgsAndQuals.fst(25,16-25,17): (Error 91) Inconsistent implicit argument annotation on argument uu___#199
+> In the top-level declaration for `let test1`
+> In the top-level declaration for `[@@expect_failure] let test1`
+> While checking module ArgsAndQuals
 >>]
 ArgsAndQuals.fst(23,4-23,9): (Warning 240) Admitting ArgsAndQuals.test1 without a definition
 Verified module: ArgsAndQuals
