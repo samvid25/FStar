@@ -14,12 +14,12 @@ let main : 'uuuuuu6 'uuuuuu7 . 'uuuuuu6 -> 'uuuuuu7 =
                 if uu____26 then () else FStar_All.exit Prims.int_one);
                FStar_All.exit Prims.int_zero)) ()
      with
-     | FStar_Errors.Error (err, msg, r) when
-         let uu____37 = FStar_Options.trace_error () in
-         FStar_All.pipe_left Prims.op_Negation uu____37 ->
+     | FStar_Errors.Error (err, msg, r, _ctx) when
+         let uu____43 = FStar_Options.trace_error () in
+         FStar_All.pipe_left Prims.op_Negation uu____43 ->
          (if r = FStar_Range.dummyRange
           then FStar_Util.print_string msg
           else
-            (let uu____40 = FStar_Range.string_of_range r in
-             FStar_Util.print2 "%s: %s\n" uu____40 msg);
+            (let uu____46 = FStar_Range.string_of_range r in
+             FStar_Util.print2 "%s: %s\n" uu____46 msg);
           FStar_All.exit Prims.int_one))
