@@ -1,7 +1,7 @@
 >> Got issues: [
 Inference.fst(20,14-20,15): (Error 19) Subtyping check failed; expected type Prims.eqtype; got type Type0; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
-> In the top-level declaration for `let alloc_fails`
-> In the top-level declaration for `[@@expect_failure] let alloc_fails`
+> While typechecking the top-level declaration `let alloc_fails`
+> While typechecking the top-level declaration `[@@expect_failure] let alloc_fails`
 > While checking module Inference
   (see also prims.fst(45,23-45,30))
 >>]

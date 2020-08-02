@@ -20,8 +20,8 @@ Goal 1/1:
 
 >> Got issues: [
 StrictUnfolding.fst(50,2-50,8): (Error 19) Could not prove goal #1; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
-> In the top-level declaration for `let test_integer_generic_wo_fstar_integers`
-> In the top-level declaration for `[@@expect_failure] let test_integer_generic_wo_fstar_integers`
+> While typechecking the top-level declaration `let test_integer_generic_wo_fstar_integers`
+> While typechecking the top-level declaration `[@@expect_failure] let test_integer_generic_wo_fstar_integers`
 > While checking module StrictUnfolding
   (see also StrictUnfolding.fst(50,48-50,72))
 >>]

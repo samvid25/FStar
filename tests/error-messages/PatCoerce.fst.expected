@@ -1,7 +1,7 @@
 >> Got issues: [
 PatCoerce.fst(25,4-25,8): (Error 114) Type of pattern (Prims.bool) does not match type of scrutinee (Type0)
-> In the top-level declaration for `let bla`
-> In the top-level declaration for `[@@expect_failure] let bla`
+> While typechecking the top-level declaration `let bla`
+> While typechecking the top-level declaration `[@@expect_failure] let bla`
 > While checking module PatCoerce
 >>]
 PatCoerce.fst(20,4-20,7): (Warning 240) Admitting PatCoerce.bla without a definition

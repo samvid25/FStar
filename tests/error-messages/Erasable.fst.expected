@@ -1,37 +1,37 @@
 >> Got issues: [
 Erasable.fst(6,0-8,17): (Error 162) Incompatible attributes and qualifiers: erasable types do not support decidable equality and must be marked `noeq`
-> In the top-level declaration for `type Erasable.t0`
-> In the top-level declaration for `[@@expect_failure] type Erasable.t0`
+> While typechecking the top-level declaration `type Erasable.t0`
+> While typechecking the top-level declaration `[@@expect_failure] type Erasable.t0`
 > While checking module Erasable
 >>]
 >> Got issues: [
 Erasable.fst(18,2-20,15): (Error 34) Computed type "Prims.int" and effect "GHOST" is not compatible with the annotated type "Prims.int" effect "Tot"
-> In the top-level declaration for `let test0_fail`
-> In the top-level declaration for `[@@expect_failure] let test0_fail`
+> While typechecking the top-level declaration `let test0_fail`
+> While typechecking the top-level declaration `[@@expect_failure] let test0_fail`
 > While checking module Erasable
 >>]
 >> Got issues: [
 Erasable.fst(28,42-28,52): (Error 34) Computed type "Prims.int" and effect "GTot" is not compatible with the annotated type "Prims.int" effect "Tot"
-> In the top-level declaration for `let test1_fail`
-> In the top-level declaration for `[@@expect_failure] let test1_fail`
+> While typechecking the top-level declaration `let test1_fail`
+> While typechecking the top-level declaration `[@@expect_failure] let test1_fail`
 > While checking module Erasable
 >>]
 >> Got issues: [
 Erasable.fst(41,12-41,15): (Error 162) Illegal attribute: the `erasable` attribute is only permitted on inductive type definitions and abbreviations for non-informative types. Prims.nat is considered informative.
-> In the top-level declaration for `let e_nat`
-> In the top-level declaration for `[@@expect_failure] let e_nat`
+> While typechecking the top-level declaration `let e_nat`
+> While typechecking the top-level declaration `[@@expect_failure] let e_nat`
 > While checking module Erasable
 >>]
 >> Got issues: [
 Erasable.fst(52,0-52,17): (Error 162) Mismatch of attributes between declaration and definition: Declaration is marked `erasable` but the definition is not
-> In the top-level declaration for `let e_nat_2`
-> In the top-level declaration for `[@@expect_failure] let e_nat_2`
+> While typechecking the top-level declaration `let e_nat_2`
+> While typechecking the top-level declaration `[@@expect_failure] let e_nat_2`
 > While checking module Erasable
 >>]
 >> Got issues: [
 Erasable.fst(59,0-59,29): (Error 162) Mismatch of attributes between declaration and definition: Declaration is marked `erasable` but the definition is not
-> In the top-level declaration for `type Erasable.e_nat_3`
-> In the top-level declaration for `[@@expect_failure] type Erasable.e_nat_3`
+> While typechecking the top-level declaration `type Erasable.e_nat_3`
+> While typechecking the top-level declaration `[@@expect_failure] type Erasable.e_nat_3`
 > While checking module Erasable
 >>]
 Erasable.fst(49,4-49,11): (Warning 240) Admitting Erasable.e_nat_2 without a definition

@@ -1,19 +1,19 @@
 >> Got issues: [
 Bug1988.fst(4,14-4,30): (Error 189) Expected expression of type "Prims.int"; got expression ""string literal"" of type "Prims.string"
-> In the top-level declaration for `let x`
-> In the top-level declaration for `[@@expect_failure] let x`
+> While typechecking the top-level declaration `let x`
+> While typechecking the top-level declaration `[@@expect_failure] let x`
 > While checking module Bug1988
 >>]
 >> Got issues: [
 Bug1988.fst(15,32-15,38): (Error 54) Prims.string is not equal to the expected type _: Bug1988.ident -> Prims.Tot Prims.string
-> In the top-level declaration for `let f1`
-> In the top-level declaration for `[@@expect_failure] let f1`
+> While typechecking the top-level declaration `let f1`
+> While typechecking the top-level declaration `[@@expect_failure] let f1`
 > While checking module Bug1988
 >>]
 >> Got issues: [
 Bug1988.fst(21,32-21,38): (Error 54) Prims.string is not a subtype of the expected type _: (*?u21*) _ -> Prims.Tot (*?u22*) _
-> In the top-level declaration for `let f2`
-> In the top-level declaration for `[@@expect_failure] let f2`
+> While typechecking the top-level declaration `let f2`
+> While typechecking the top-level declaration `[@@expect_failure] let f2`
 > While checking module Bug1988
 >>]
 Verified module: Bug1988

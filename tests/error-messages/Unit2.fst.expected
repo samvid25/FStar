@@ -1,7 +1,7 @@
 >> Got issues: [
 Unit2.fst(37,21-38,60): (Error 19) assertion failed; The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
-> In the top-level declaration for `let test6`
-> In the top-level declaration for `[@@expect_failure] let test6`
+> While typechecking the top-level declaration `let test6`
+> While typechecking the top-level declaration `[@@expect_failure] let test6`
 > While checking module Unit2
 >>]
 Verified module: Unit2

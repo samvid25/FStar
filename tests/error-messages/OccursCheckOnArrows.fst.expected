@@ -1,7 +1,7 @@
 >> Got issues: [
 OccursCheckOnArrows.fst(18,15-18,16): (Error 54) _: (*?u5*) _ -> Prims.Tot (*?u4*) _ is not a subtype of the expected type (*?u5*) _
-> In the top-level declaration for `let oops`
-> In the top-level declaration for `[@@expect_failure] let oops`
+> While typechecking the top-level declaration `let oops`
+> While typechecking the top-level declaration `[@@expect_failure] let oops`
 > While checking module OccursCheckOnArrows
   (see also OccursCheckOnArrows.fst(18,9-18,10))
 >>]

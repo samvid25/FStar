@@ -1,7 +1,7 @@
 >> Got issues: [
 QuickTestNBE.fst(127,2-130,34): (Error 19)  (Also see: QuickTestNBE(1,2-3,4))(Other related locations: QuickTestNBE.fst(111,12-111,15)); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
-> In the top-level declaration for `let va_lemma_Test2`
-> In the top-level declaration for `[@@expect_failure] let va_lemma_Test2`
+> While typechecking the top-level declaration `let va_lemma_Test2`
+> While typechecking the top-level declaration `[@@expect_failure] let va_lemma_Test2`
 > While checking module QuickTestNBE
 >>]
 Verified module: QuickTestNBE
