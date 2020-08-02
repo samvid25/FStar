@@ -3977,7 +3977,8 @@ let (tc_decls :
                     let uu____4302 =
                       FStar_Syntax_Print.sigelt_to_string_short se in
                     FStar_Util.format1
-                      "In the top-level declaration for `%s`" uu____4302 in
+                      "While typechecking the top-level declaration `%s`"
+                      uu____4302 in
                   FStar_Errors.with_ctx uu____4301
                     (fun uu____4314 -> tc_decl env1 se) in
                 match uu____4290 with

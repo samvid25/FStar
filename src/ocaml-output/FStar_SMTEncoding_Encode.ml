@@ -3969,7 +3969,8 @@ let rec (encode_sigelt :
       let uu____11307 =
         let uu____11312 =
           let uu____11313 = FStar_Syntax_Print.sigelt_to_string_short se in
-          FStar_Util.format1 "While encoding sigelt `%s`" uu____11313 in
+          FStar_Util.format1 "While encoding top-level declaration `%s`"
+            uu____11313 in
         FStar_Errors.with_ctx uu____11312
           (fun uu____11319 -> encode_sigelt' env se) in
       match uu____11307 with
