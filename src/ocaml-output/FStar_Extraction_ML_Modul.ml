@@ -2097,23 +2097,25 @@ let (extract :
        if uu____6286
        then (g, FStar_Pervasives_Native.None)
        else
-         (let uu____6296 =
+         (let nm =
+            FStar_Syntax_Print.lid_to_string m.FStar_Syntax_Syntax.name in
+          let uu____6297 =
             FStar_Syntax_Unionfind.with_uf_enabled
-              (fun uu____6312 ->
-                 let uu____6313 = FStar_Options.debug_any () in
-                 if uu____6313
-                 then
-                   let msg =
-                     let uu____6321 =
-                       FStar_Syntax_Print.lid_to_string
-                         m.FStar_Syntax_Syntax.name in
-                     FStar_Util.format1 "Extracting module %s" uu____6321 in
-                   FStar_Util.measure_execution_time msg
-                     (fun uu____6329 -> extract' g m)
-                 else extract' g m) in
-          match uu____6296 with
+              (fun uu____6311 ->
+                 FStar_Errors.with_ctx
+                   (Prims.op_Hat "While extracting module " nm)
+                   (fun uu____6321 ->
+                      let uu____6322 = FStar_Options.debug_any () in
+                      if uu____6322
+                      then
+                        let msg =
+                          FStar_Util.format1 "Extracting module %s" nm in
+                        FStar_Util.measure_execution_time msg
+                          (fun uu____6337 -> extract' g m)
+                      else extract' g m)) in
+          match uu____6297 with
           | (g1, mllib) ->
-              ((let uu____6344 = FStar_Options.restore_cmd_line_options true in
-                FStar_All.pipe_left (fun uu____6345 -> ()) uu____6344);
-               (let uu____6346 = FStar_Extraction_ML_UEnv.exit_module g1 in
-                (uu____6346, mllib)))))
+              ((let uu____6352 = FStar_Options.restore_cmd_line_options true in
+                FStar_All.pipe_left (fun uu____6353 -> ()) uu____6352);
+               (let uu____6354 = FStar_Extraction_ML_UEnv.exit_module g1 in
+                (uu____6354, mllib)))))

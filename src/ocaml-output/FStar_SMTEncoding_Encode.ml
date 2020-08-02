@@ -6377,15 +6377,15 @@ let (encode_env_bindings :
                    FStar_Syntax_Syntax.lid_as_fv x
                      FStar_Syntax_Syntax.delta_constant
                      FStar_Pervasives_Native.None in
-                 let uu____15596 = encode_free_var false env1 fv t t_norm [] in
-                 (match uu____15596 with
+                 let uu____15590 = encode_free_var false env1 fv t t_norm [] in
+                 (match uu____15590 with
                   | (g, env') ->
                       ((i + Prims.int_one), (FStar_List.append decls g),
                         env'))) in
-      let uu____15613 =
+      let uu____15607 =
         FStar_List.fold_right encode_binding bindings
           (Prims.int_zero, [], env) in
-      match uu____15613 with | (uu____15636, decls, env1) -> (decls, env1)
+      match uu____15607 with | (uu____15630, decls, env1) -> (decls, env1)
 let (encode_labels :
   FStar_SMTEncoding_Term.error_label Prims.list ->
     (FStar_SMTEncoding_Term.decl Prims.list * FStar_SMTEncoding_Term.decl
@@ -6395,116 +6395,116 @@ let (encode_labels :
     let prefix =
       FStar_All.pipe_right labs
         (FStar_List.map
-           (fun uu____15684 ->
-              match uu____15684 with
-              | (l, uu____15692, uu____15693) ->
-                  let uu____15694 =
-                    let uu____15705 = FStar_SMTEncoding_Term.fv_name l in
-                    (uu____15705, [], FStar_SMTEncoding_Term.Bool_sort,
+           (fun uu____15678 ->
+              match uu____15678 with
+              | (l, uu____15686, uu____15687) ->
+                  let uu____15688 =
+                    let uu____15699 = FStar_SMTEncoding_Term.fv_name l in
+                    (uu____15699, [], FStar_SMTEncoding_Term.Bool_sort,
                       FStar_Pervasives_Native.None) in
-                  FStar_SMTEncoding_Term.DeclFun uu____15694)) in
+                  FStar_SMTEncoding_Term.DeclFun uu____15688)) in
     let suffix =
       FStar_All.pipe_right labs
         (FStar_List.collect
-           (fun uu____15733 ->
-              match uu____15733 with
-              | (l, uu____15743, uu____15744) ->
-                  let uu____15745 =
-                    let uu____15746 = FStar_SMTEncoding_Term.fv_name l in
+           (fun uu____15727 ->
+              match uu____15727 with
+              | (l, uu____15737, uu____15738) ->
+                  let uu____15739 =
+                    let uu____15740 = FStar_SMTEncoding_Term.fv_name l in
                     FStar_All.pipe_left
-                      (fun uu____15747 ->
-                         FStar_SMTEncoding_Term.Echo uu____15747) uu____15746 in
-                  let uu____15748 =
-                    let uu____15751 =
-                      let uu____15752 = FStar_SMTEncoding_Util.mkFreeV l in
-                      FStar_SMTEncoding_Term.Eval uu____15752 in
-                    [uu____15751] in
-                  uu____15745 :: uu____15748)) in
+                      (fun uu____15741 ->
+                         FStar_SMTEncoding_Term.Echo uu____15741) uu____15740 in
+                  let uu____15742 =
+                    let uu____15745 =
+                      let uu____15746 = FStar_SMTEncoding_Util.mkFreeV l in
+                      FStar_SMTEncoding_Term.Eval uu____15746 in
+                    [uu____15745] in
+                  uu____15739 :: uu____15742)) in
     (prefix, suffix)
 let (last_env : FStar_SMTEncoding_Env.env_t Prims.list FStar_ST.ref) =
   FStar_Util.mk_ref []
 let (init_env : FStar_TypeChecker_Env.env -> unit) =
   fun tcenv ->
-    let uu____15768 =
-      let uu____15771 =
-        let uu____15772 = FStar_Util.psmap_empty () in
-        let uu____15787 =
-          let uu____15796 = FStar_Util.psmap_empty () in (uu____15796, []) in
-        let uu____15803 =
-          let uu____15804 = FStar_TypeChecker_Env.current_module tcenv in
-          FStar_All.pipe_right uu____15804 FStar_Ident.string_of_lid in
-        let uu____15805 = FStar_Util.smap_create (Prims.of_int (100)) in
+    let uu____15762 =
+      let uu____15765 =
+        let uu____15766 = FStar_Util.psmap_empty () in
+        let uu____15781 =
+          let uu____15790 = FStar_Util.psmap_empty () in (uu____15790, []) in
+        let uu____15797 =
+          let uu____15798 = FStar_TypeChecker_Env.current_module tcenv in
+          FStar_All.pipe_right uu____15798 FStar_Ident.string_of_lid in
+        let uu____15799 = FStar_Util.smap_create (Prims.of_int (100)) in
         {
-          FStar_SMTEncoding_Env.bvar_bindings = uu____15772;
-          FStar_SMTEncoding_Env.fvar_bindings = uu____15787;
+          FStar_SMTEncoding_Env.bvar_bindings = uu____15766;
+          FStar_SMTEncoding_Env.fvar_bindings = uu____15781;
           FStar_SMTEncoding_Env.depth = Prims.int_zero;
           FStar_SMTEncoding_Env.tcenv = tcenv;
           FStar_SMTEncoding_Env.warn = true;
           FStar_SMTEncoding_Env.nolabels = false;
           FStar_SMTEncoding_Env.use_zfuel_name = false;
           FStar_SMTEncoding_Env.encode_non_total_function_typ = true;
-          FStar_SMTEncoding_Env.current_module_name = uu____15803;
+          FStar_SMTEncoding_Env.current_module_name = uu____15797;
           FStar_SMTEncoding_Env.encoding_quantifier = false;
-          FStar_SMTEncoding_Env.global_cache = uu____15805
+          FStar_SMTEncoding_Env.global_cache = uu____15799
         } in
-      [uu____15771] in
-    FStar_ST.op_Colon_Equals last_env uu____15768
+      [uu____15765] in
+    FStar_ST.op_Colon_Equals last_env uu____15762
 let (get_env :
   FStar_Ident.lident ->
     FStar_TypeChecker_Env.env -> FStar_SMTEncoding_Env.env_t)
   =
   fun cmn ->
     fun tcenv ->
-      let uu____15828 = FStar_ST.op_Bang last_env in
-      match uu____15828 with
+      let uu____15822 = FStar_ST.op_Bang last_env in
+      match uu____15822 with
       | [] -> failwith "No env; call init first!"
-      | e::uu____15842 ->
-          let uu___1580_15845 = e in
-          let uu____15846 = FStar_Ident.string_of_lid cmn in
+      | e::uu____15836 ->
+          let uu___1580_15839 = e in
+          let uu____15840 = FStar_Ident.string_of_lid cmn in
           {
             FStar_SMTEncoding_Env.bvar_bindings =
-              (uu___1580_15845.FStar_SMTEncoding_Env.bvar_bindings);
+              (uu___1580_15839.FStar_SMTEncoding_Env.bvar_bindings);
             FStar_SMTEncoding_Env.fvar_bindings =
-              (uu___1580_15845.FStar_SMTEncoding_Env.fvar_bindings);
+              (uu___1580_15839.FStar_SMTEncoding_Env.fvar_bindings);
             FStar_SMTEncoding_Env.depth =
-              (uu___1580_15845.FStar_SMTEncoding_Env.depth);
+              (uu___1580_15839.FStar_SMTEncoding_Env.depth);
             FStar_SMTEncoding_Env.tcenv = tcenv;
             FStar_SMTEncoding_Env.warn =
-              (uu___1580_15845.FStar_SMTEncoding_Env.warn);
+              (uu___1580_15839.FStar_SMTEncoding_Env.warn);
             FStar_SMTEncoding_Env.nolabels =
-              (uu___1580_15845.FStar_SMTEncoding_Env.nolabels);
+              (uu___1580_15839.FStar_SMTEncoding_Env.nolabels);
             FStar_SMTEncoding_Env.use_zfuel_name =
-              (uu___1580_15845.FStar_SMTEncoding_Env.use_zfuel_name);
+              (uu___1580_15839.FStar_SMTEncoding_Env.use_zfuel_name);
             FStar_SMTEncoding_Env.encode_non_total_function_typ =
-              (uu___1580_15845.FStar_SMTEncoding_Env.encode_non_total_function_typ);
-            FStar_SMTEncoding_Env.current_module_name = uu____15846;
+              (uu___1580_15839.FStar_SMTEncoding_Env.encode_non_total_function_typ);
+            FStar_SMTEncoding_Env.current_module_name = uu____15840;
             FStar_SMTEncoding_Env.encoding_quantifier =
-              (uu___1580_15845.FStar_SMTEncoding_Env.encoding_quantifier);
+              (uu___1580_15839.FStar_SMTEncoding_Env.encoding_quantifier);
             FStar_SMTEncoding_Env.global_cache =
-              (uu___1580_15845.FStar_SMTEncoding_Env.global_cache)
+              (uu___1580_15839.FStar_SMTEncoding_Env.global_cache)
           }
 let (set_env : FStar_SMTEncoding_Env.env_t -> unit) =
   fun env ->
-    let uu____15852 = FStar_ST.op_Bang last_env in
-    match uu____15852 with
+    let uu____15846 = FStar_ST.op_Bang last_env in
+    match uu____15846 with
     | [] -> failwith "Empty env stack"
-    | uu____15865::tl -> FStar_ST.op_Colon_Equals last_env (env :: tl)
+    | uu____15859::tl -> FStar_ST.op_Colon_Equals last_env (env :: tl)
 let (push_env : unit -> unit) =
-  fun uu____15883 ->
-    let uu____15884 = FStar_ST.op_Bang last_env in
-    match uu____15884 with
+  fun uu____15877 ->
+    let uu____15878 = FStar_ST.op_Bang last_env in
+    match uu____15878 with
     | [] -> failwith "Empty env stack"
     | hd::tl ->
         let top = copy_env hd in
         FStar_ST.op_Colon_Equals last_env (top :: hd :: tl)
 let (pop_env : unit -> unit) =
-  fun uu____15916 ->
-    let uu____15917 = FStar_ST.op_Bang last_env in
-    match uu____15917 with
+  fun uu____15910 ->
+    let uu____15911 = FStar_ST.op_Bang last_env in
+    match uu____15911 with
     | [] -> failwith "Popping an empty stack"
-    | uu____15930::tl -> FStar_ST.op_Colon_Equals last_env tl
+    | uu____15924::tl -> FStar_ST.op_Colon_Equals last_env tl
 let (snapshot_env : unit -> (Prims.int * unit)) =
-  fun uu____15952 -> FStar_Common.snapshot push_env last_env ()
+  fun uu____15946 -> FStar_Common.snapshot push_env last_env ()
 let (rollback_env : Prims.int FStar_Pervasives_Native.option -> unit) =
   fun depth -> FStar_Common.rollback pop_env last_env depth
 let (init : FStar_TypeChecker_Env.env -> unit) =
@@ -6516,16 +6516,16 @@ let (snapshot :
   Prims.string -> (FStar_TypeChecker_Env.solver_depth_t * unit)) =
   fun msg ->
     FStar_Util.atomically
-      (fun uu____15995 ->
-         let uu____15996 = snapshot_env () in
-         match uu____15996 with
+      (fun uu____15989 ->
+         let uu____15990 = snapshot_env () in
+         match uu____15990 with
          | (env_depth, ()) ->
-             let uu____16012 =
+             let uu____16006 =
                FStar_SMTEncoding_Env.varops.FStar_SMTEncoding_Env.snapshot () in
-             (match uu____16012 with
+             (match uu____16006 with
               | (varops_depth, ()) ->
-                  let uu____16028 = FStar_SMTEncoding_Z3.snapshot msg in
-                  (match uu____16028 with
+                  let uu____16022 = FStar_SMTEncoding_Z3.snapshot msg in
+                  (match uu____16022 with
                    | (z3_depth, ()) ->
                        ((env_depth, varops_depth, z3_depth), ()))))
 let (rollback :
@@ -6536,8 +6536,8 @@ let (rollback :
   fun msg ->
     fun depth ->
       FStar_Util.atomically
-        (fun uu____16071 ->
-           let uu____16072 =
+        (fun uu____16065 ->
+           let uu____16066 =
              match depth with
              | FStar_Pervasives_Native.Some (s1, s2, s3) ->
                  ((FStar_Pervasives_Native.Some s1),
@@ -6546,14 +6546,14 @@ let (rollback :
              | FStar_Pervasives_Native.None ->
                  (FStar_Pervasives_Native.None, FStar_Pervasives_Native.None,
                    FStar_Pervasives_Native.None) in
-           match uu____16072 with
+           match uu____16066 with
            | (env_depth, varops_depth, z3_depth) ->
                (rollback_env env_depth;
                 FStar_SMTEncoding_Env.varops.FStar_SMTEncoding_Env.rollback
                   varops_depth;
                 FStar_SMTEncoding_Z3.rollback msg z3_depth))
 let (push : Prims.string -> unit) =
-  fun msg -> let uu____16134 = snapshot msg in ()
+  fun msg -> let uu____16128 = snapshot msg in ()
 let (pop : Prims.string -> unit) =
   fun msg -> rollback msg FStar_Pervasives_Native.None
 let (open_fact_db_tags :
@@ -6568,19 +6568,19 @@ let (place_decl_in_fact_dbs :
     fun fact_db_ids ->
       fun d ->
         match (fact_db_ids, d) with
-        | (uu____16175::uu____16176, FStar_SMTEncoding_Term.Assume a) ->
+        | (uu____16169::uu____16170, FStar_SMTEncoding_Term.Assume a) ->
             FStar_SMTEncoding_Term.Assume
-              (let uu___1641_16184 = a in
+              (let uu___1641_16178 = a in
                {
                  FStar_SMTEncoding_Term.assumption_term =
-                   (uu___1641_16184.FStar_SMTEncoding_Term.assumption_term);
+                   (uu___1641_16178.FStar_SMTEncoding_Term.assumption_term);
                  FStar_SMTEncoding_Term.assumption_caption =
-                   (uu___1641_16184.FStar_SMTEncoding_Term.assumption_caption);
+                   (uu___1641_16178.FStar_SMTEncoding_Term.assumption_caption);
                  FStar_SMTEncoding_Term.assumption_name =
-                   (uu___1641_16184.FStar_SMTEncoding_Term.assumption_name);
+                   (uu___1641_16178.FStar_SMTEncoding_Term.assumption_name);
                  FStar_SMTEncoding_Term.assumption_fact_ids = fact_db_ids
                })
-        | uu____16185 -> d
+        | uu____16179 -> d
 let (place_decl_elt_in_fact_dbs :
   FStar_SMTEncoding_Env.env_t ->
     FStar_SMTEncoding_Term.fact_db_id Prims.list ->
@@ -6589,18 +6589,18 @@ let (place_decl_elt_in_fact_dbs :
   fun env ->
     fun fact_db_ids ->
       fun elt ->
-        let uu___1647_16211 = elt in
-        let uu____16212 =
+        let uu___1647_16205 = elt in
+        let uu____16206 =
           FStar_All.pipe_right elt.FStar_SMTEncoding_Term.decls
             (FStar_List.map (place_decl_in_fact_dbs env fact_db_ids)) in
         {
           FStar_SMTEncoding_Term.sym_name =
-            (uu___1647_16211.FStar_SMTEncoding_Term.sym_name);
+            (uu___1647_16205.FStar_SMTEncoding_Term.sym_name);
           FStar_SMTEncoding_Term.key =
-            (uu___1647_16211.FStar_SMTEncoding_Term.key);
-          FStar_SMTEncoding_Term.decls = uu____16212;
+            (uu___1647_16205.FStar_SMTEncoding_Term.key);
+          FStar_SMTEncoding_Term.decls = uu____16206;
           FStar_SMTEncoding_Term.a_names =
-            (uu___1647_16211.FStar_SMTEncoding_Term.a_names)
+            (uu___1647_16205.FStar_SMTEncoding_Term.a_names)
         }
 let (fact_dbs_for_lid :
   FStar_SMTEncoding_Env.env_t ->
@@ -6608,14 +6608,14 @@ let (fact_dbs_for_lid :
   =
   fun env ->
     fun lid ->
-      let uu____16231 =
-        let uu____16234 =
-          let uu____16235 =
-            let uu____16236 = FStar_Ident.ns_of_lid lid in
-            FStar_Ident.lid_of_ids uu____16236 in
-          FStar_SMTEncoding_Term.Namespace uu____16235 in
-        let uu____16237 = open_fact_db_tags env in uu____16234 :: uu____16237 in
-      (FStar_SMTEncoding_Term.Name lid) :: uu____16231
+      let uu____16225 =
+        let uu____16228 =
+          let uu____16229 =
+            let uu____16230 = FStar_Ident.ns_of_lid lid in
+            FStar_Ident.lid_of_ids uu____16230 in
+          FStar_SMTEncoding_Term.Namespace uu____16229 in
+        let uu____16231 = open_fact_db_tags env in uu____16228 :: uu____16231 in
+      (FStar_SMTEncoding_Term.Name lid) :: uu____16225
 let (encode_top_level_facts :
   FStar_SMTEncoding_Env.env_t ->
     FStar_Syntax_Syntax.sigelt ->
@@ -6627,8 +6627,8 @@ let (encode_top_level_facts :
       let fact_db_ids =
         FStar_All.pipe_right (FStar_Syntax_Util.lids_of_sigelt se)
           (FStar_List.collect (fact_dbs_for_lid env)) in
-      let uu____16263 = encode_sigelt env se in
-      match uu____16263 with
+      let uu____16257 = encode_sigelt env se in
+      match uu____16257 with
       | (g, env1) ->
           let g1 =
             FStar_All.pipe_right g
@@ -6647,24 +6647,24 @@ let (recover_caching_and_update_env :
                 elt.FStar_SMTEncoding_Term.key = FStar_Pervasives_Native.None
               then [elt]
               else
-                (let uu____16304 =
-                   let uu____16307 =
+                (let uu____16298 =
+                   let uu____16301 =
                      FStar_All.pipe_right elt.FStar_SMTEncoding_Term.key
                        FStar_Util.must in
                    FStar_Util.smap_try_find
-                     env.FStar_SMTEncoding_Env.global_cache uu____16307 in
-                 match uu____16304 with
+                     env.FStar_SMTEncoding_Env.global_cache uu____16301 in
+                 match uu____16298 with
                  | FStar_Pervasives_Native.Some cache_elt ->
                      FStar_All.pipe_right
                        [FStar_SMTEncoding_Term.RetainAssumptions
                           (cache_elt.FStar_SMTEncoding_Term.a_names)]
                        FStar_SMTEncoding_Term.mk_decls_trivial
                  | FStar_Pervasives_Native.None ->
-                     ((let uu____16318 =
+                     ((let uu____16312 =
                          FStar_All.pipe_right elt.FStar_SMTEncoding_Term.key
                            FStar_Util.must in
                        FStar_Util.smap_add
-                         env.FStar_SMTEncoding_Env.global_cache uu____16318
+                         env.FStar_SMTEncoding_Env.global_cache uu____16312
                          elt);
                       [elt]))))
 let (encode_sig :
@@ -6672,43 +6672,43 @@ let (encode_sig :
   fun tcenv ->
     fun se ->
       let caption decls =
-        let uu____16343 = FStar_Options.log_queries () in
-        if uu____16343
+        let uu____16337 = FStar_Options.log_queries () in
+        if uu____16337
         then
-          let uu____16346 =
-            let uu____16347 =
-              let uu____16348 =
-                let uu____16349 =
+          let uu____16340 =
+            let uu____16341 =
+              let uu____16342 =
+                let uu____16343 =
                   FStar_All.pipe_right (FStar_Syntax_Util.lids_of_sigelt se)
                     (FStar_List.map FStar_Syntax_Print.lid_to_string) in
-                FStar_All.pipe_right uu____16349 (FStar_String.concat ", ") in
-              Prims.op_Hat "encoding sigelt " uu____16348 in
-            FStar_SMTEncoding_Term.Caption uu____16347 in
-          uu____16346 :: decls
+                FStar_All.pipe_right uu____16343 (FStar_String.concat ", ") in
+              Prims.op_Hat "encoding sigelt " uu____16342 in
+            FStar_SMTEncoding_Term.Caption uu____16341 in
+          uu____16340 :: decls
         else decls in
-      (let uu____16360 =
+      (let uu____16354 =
          FStar_TypeChecker_Env.debug tcenv FStar_Options.Medium in
-       if uu____16360
+       if uu____16354
        then
-         let uu____16361 = FStar_Syntax_Print.sigelt_to_string se in
-         FStar_Util.print1 "+++++++++++Encoding sigelt %s\n" uu____16361
+         let uu____16355 = FStar_Syntax_Print.sigelt_to_string se in
+         FStar_Util.print1 "+++++++++++Encoding sigelt %s\n" uu____16355
        else ());
       (let env =
-         let uu____16364 = FStar_TypeChecker_Env.current_module tcenv in
-         get_env uu____16364 tcenv in
-       let uu____16365 = encode_top_level_facts env se in
-       match uu____16365 with
+         let uu____16358 = FStar_TypeChecker_Env.current_module tcenv in
+         get_env uu____16358 tcenv in
+       let uu____16359 = encode_top_level_facts env se in
+       match uu____16359 with
        | (decls, env1) ->
            (set_env env1;
-            (let uu____16379 =
-               let uu____16382 =
-                 let uu____16385 =
+            (let uu____16373 =
+               let uu____16376 =
+                 let uu____16379 =
                    FStar_All.pipe_right decls
                      (recover_caching_and_update_env env1) in
-                 FStar_All.pipe_right uu____16385
+                 FStar_All.pipe_right uu____16379
                    FStar_SMTEncoding_Term.decls_list_of in
-               caption uu____16382 in
-             FStar_SMTEncoding_Z3.giveZ3 uu____16379)))
+               caption uu____16376 in
+             FStar_SMTEncoding_Z3.giveZ3 uu____16373)))
 let (give_decls_to_z3_and_set_env :
   FStar_SMTEncoding_Env.env_t ->
     Prims.string -> FStar_SMTEncoding_Term.decls_t -> unit)
@@ -6717,8 +6717,8 @@ let (give_decls_to_z3_and_set_env :
     fun name ->
       fun decls ->
         let caption decls1 =
-          let uu____16415 = FStar_Options.log_queries () in
-          if uu____16415
+          let uu____16409 = FStar_Options.log_queries () in
+          if uu____16409
           then
             let msg = Prims.op_Hat "Externals for " name in
             [FStar_SMTEncoding_Term.Module
@@ -6728,38 +6728,38 @@ let (give_decls_to_z3_and_set_env :
                     [FStar_SMTEncoding_Term.Caption (Prims.op_Hat "End " msg)]))]
           else [FStar_SMTEncoding_Term.Module (name, decls1)] in
         set_env
-          (let uu___1685_16427 = env in
+          (let uu___1685_16421 = env in
            {
              FStar_SMTEncoding_Env.bvar_bindings =
-               (uu___1685_16427.FStar_SMTEncoding_Env.bvar_bindings);
+               (uu___1685_16421.FStar_SMTEncoding_Env.bvar_bindings);
              FStar_SMTEncoding_Env.fvar_bindings =
-               (uu___1685_16427.FStar_SMTEncoding_Env.fvar_bindings);
+               (uu___1685_16421.FStar_SMTEncoding_Env.fvar_bindings);
              FStar_SMTEncoding_Env.depth =
-               (uu___1685_16427.FStar_SMTEncoding_Env.depth);
+               (uu___1685_16421.FStar_SMTEncoding_Env.depth);
              FStar_SMTEncoding_Env.tcenv =
-               (uu___1685_16427.FStar_SMTEncoding_Env.tcenv);
+               (uu___1685_16421.FStar_SMTEncoding_Env.tcenv);
              FStar_SMTEncoding_Env.warn = true;
              FStar_SMTEncoding_Env.nolabels =
-               (uu___1685_16427.FStar_SMTEncoding_Env.nolabels);
+               (uu___1685_16421.FStar_SMTEncoding_Env.nolabels);
              FStar_SMTEncoding_Env.use_zfuel_name =
-               (uu___1685_16427.FStar_SMTEncoding_Env.use_zfuel_name);
+               (uu___1685_16421.FStar_SMTEncoding_Env.use_zfuel_name);
              FStar_SMTEncoding_Env.encode_non_total_function_typ =
-               (uu___1685_16427.FStar_SMTEncoding_Env.encode_non_total_function_typ);
+               (uu___1685_16421.FStar_SMTEncoding_Env.encode_non_total_function_typ);
              FStar_SMTEncoding_Env.current_module_name =
-               (uu___1685_16427.FStar_SMTEncoding_Env.current_module_name);
+               (uu___1685_16421.FStar_SMTEncoding_Env.current_module_name);
              FStar_SMTEncoding_Env.encoding_quantifier =
-               (uu___1685_16427.FStar_SMTEncoding_Env.encoding_quantifier);
+               (uu___1685_16421.FStar_SMTEncoding_Env.encoding_quantifier);
              FStar_SMTEncoding_Env.global_cache =
-               (uu___1685_16427.FStar_SMTEncoding_Env.global_cache)
+               (uu___1685_16421.FStar_SMTEncoding_Env.global_cache)
            });
         (let z3_decls =
-           let uu____16431 =
-             let uu____16434 =
+           let uu____16425 =
+             let uu____16428 =
                FStar_All.pipe_right decls
                  (recover_caching_and_update_env env) in
-             FStar_All.pipe_right uu____16434
+             FStar_All.pipe_right uu____16428
                FStar_SMTEncoding_Term.decls_list_of in
-           caption uu____16431 in
+           caption uu____16425 in
          FStar_SMTEncoding_Z3.giveZ3 z3_decls)
 let (encode_modul :
   FStar_TypeChecker_Env.env ->
@@ -6769,92 +6769,92 @@ let (encode_modul :
   =
   fun tcenv ->
     fun modul ->
-      let uu____16453 = (FStar_Options.lax ()) && (FStar_Options.ml_ish ()) in
-      if uu____16453
+      let uu____16447 = (FStar_Options.lax ()) && (FStar_Options.ml_ish ()) in
+      if uu____16447
       then ([], [])
       else
         FStar_Syntax_Unionfind.with_uf_enabled
-          (fun uu____16483 ->
+          (fun uu____16477 ->
              FStar_SMTEncoding_Env.varops.FStar_SMTEncoding_Env.reset_fresh
                ();
              (let name =
-                let uu____16486 =
+                let uu____16480 =
                   FStar_Ident.string_of_lid modul.FStar_Syntax_Syntax.name in
                 FStar_Util.format2 "%s %s"
                   (if modul.FStar_Syntax_Syntax.is_interface
                    then "interface"
-                   else "module") uu____16486 in
-              (let uu____16489 =
+                   else "module") uu____16480 in
+              (let uu____16483 =
                  FStar_TypeChecker_Env.debug tcenv FStar_Options.Medium in
-               if uu____16489
+               if uu____16483
                then
-                 let uu____16490 =
+                 let uu____16484 =
                    FStar_All.pipe_right
                      (FStar_List.length
                         modul.FStar_Syntax_Syntax.declarations)
                      Prims.string_of_int in
                  FStar_Util.print2
                    "+++++++++++Encoding externals for %s ... %s declarations\n"
-                   name uu____16490
+                   name uu____16484
                else ());
               (let env =
-                 let uu____16493 =
+                 let uu____16487 =
                    get_env modul.FStar_Syntax_Syntax.name tcenv in
-                 FStar_All.pipe_right uu____16493
+                 FStar_All.pipe_right uu____16487
                    FStar_SMTEncoding_Env.reset_current_module_fvbs in
                let encode_signature env1 ses =
                  FStar_All.pipe_right ses
                    (FStar_List.fold_left
-                      (fun uu____16532 ->
+                      (fun uu____16526 ->
                          fun se ->
-                           match uu____16532 with
+                           match uu____16526 with
                            | (g, env2) ->
-                               let uu____16552 =
+                               let uu____16546 =
                                  encode_top_level_facts env2 se in
-                               (match uu____16552 with
+                               (match uu____16546 with
                                 | (g', env3) ->
                                     ((FStar_List.append g g'), env3)))
                       ([], env1)) in
-               let uu____16575 =
+               let uu____16569 =
                  encode_signature
-                   (let uu___1709_16584 = env in
+                   (let uu___1709_16578 = env in
                     {
                       FStar_SMTEncoding_Env.bvar_bindings =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.bvar_bindings);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.bvar_bindings);
                       FStar_SMTEncoding_Env.fvar_bindings =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.fvar_bindings);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.fvar_bindings);
                       FStar_SMTEncoding_Env.depth =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.depth);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.depth);
                       FStar_SMTEncoding_Env.tcenv =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.tcenv);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.tcenv);
                       FStar_SMTEncoding_Env.warn = false;
                       FStar_SMTEncoding_Env.nolabels =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.nolabels);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.nolabels);
                       FStar_SMTEncoding_Env.use_zfuel_name =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.use_zfuel_name);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.use_zfuel_name);
                       FStar_SMTEncoding_Env.encode_non_total_function_typ =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.encode_non_total_function_typ);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.encode_non_total_function_typ);
                       FStar_SMTEncoding_Env.current_module_name =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.current_module_name);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.current_module_name);
                       FStar_SMTEncoding_Env.encoding_quantifier =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.encoding_quantifier);
+                        (uu___1709_16578.FStar_SMTEncoding_Env.encoding_quantifier);
                       FStar_SMTEncoding_Env.global_cache =
-                        (uu___1709_16584.FStar_SMTEncoding_Env.global_cache)
+                        (uu___1709_16578.FStar_SMTEncoding_Env.global_cache)
                     }) modul.FStar_Syntax_Syntax.declarations in
-               match uu____16575 with
+               match uu____16569 with
                | (decls, env1) ->
                    (give_decls_to_z3_and_set_env env1 name decls;
-                    (let uu____16601 =
+                    (let uu____16595 =
                        FStar_TypeChecker_Env.debug tcenv FStar_Options.Medium in
-                     if uu____16601
+                     if uu____16595
                      then
                        FStar_Util.print1 "Done encoding externals for %s\n"
                          name
                      else ());
-                    (let uu____16603 =
+                    (let uu____16597 =
                        FStar_All.pipe_right env1
                          FStar_SMTEncoding_Env.get_current_module_fvbs in
-                     (decls, uu____16603))))))
+                     (decls, uu____16597))))))
 let (encode_modul_from_cache :
   FStar_TypeChecker_Env.env ->
     FStar_Syntax_Syntax.modul ->
@@ -6863,49 +6863,49 @@ let (encode_modul_from_cache :
   =
   fun tcenv ->
     fun tcmod ->
-      fun uu____16632 ->
-        match uu____16632 with
+      fun uu____16626 ->
+        match uu____16626 with
         | (decls, fvbs) ->
-            let uu____16645 =
+            let uu____16639 =
               (FStar_Options.lax ()) && (FStar_Options.ml_ish ()) in
-            if uu____16645
+            if uu____16639
             then ()
             else
               (let name =
-                 let uu____16648 =
+                 let uu____16642 =
                    FStar_Ident.string_of_lid tcmod.FStar_Syntax_Syntax.name in
                  FStar_Util.format2 "%s %s"
                    (if tcmod.FStar_Syntax_Syntax.is_interface
                     then "interface"
-                    else "module") uu____16648 in
-               (let uu____16651 =
+                    else "module") uu____16642 in
+               (let uu____16645 =
                   FStar_TypeChecker_Env.debug tcenv FStar_Options.Medium in
-                if uu____16651
+                if uu____16645
                 then
-                  let uu____16652 =
+                  let uu____16646 =
                     FStar_All.pipe_right (FStar_List.length decls)
                       Prims.string_of_int in
                   FStar_Util.print2
                     "+++++++++++Encoding externals from cache for %s ... %s decls\n"
-                    name uu____16652
+                    name uu____16646
                 else ());
                (let env =
-                  let uu____16655 =
+                  let uu____16649 =
                     get_env tcmod.FStar_Syntax_Syntax.name tcenv in
-                  FStar_All.pipe_right uu____16655
+                  FStar_All.pipe_right uu____16649
                     FStar_SMTEncoding_Env.reset_current_module_fvbs in
                 let env1 =
-                  let uu____16657 = FStar_All.pipe_right fvbs FStar_List.rev in
-                  FStar_All.pipe_right uu____16657
+                  let uu____16651 = FStar_All.pipe_right fvbs FStar_List.rev in
+                  FStar_All.pipe_right uu____16651
                     (FStar_List.fold_left
                        (fun env1 ->
                           fun fvb ->
                             FStar_SMTEncoding_Env.add_fvar_binding_to_env fvb
                               env1) env) in
                 give_decls_to_z3_and_set_env env1 name decls;
-                (let uu____16671 =
+                (let uu____16665 =
                    FStar_TypeChecker_Env.debug tcenv FStar_Options.Medium in
-                 if uu____16671
+                 if uu____16665
                  then
                    FStar_Util.print1
                      "Done encoding externals from cache for %s\n" name
@@ -6922,199 +6922,212 @@ let (encode_query :
   fun use_env_msg ->
     fun tcenv ->
       fun q ->
-        (let uu____16726 =
-           let uu____16727 = FStar_TypeChecker_Env.current_module tcenv in
-           FStar_Ident.string_of_lid uu____16727 in
-         FStar_SMTEncoding_Z3.query_logging.FStar_SMTEncoding_Z3.set_module_name
-           uu____16726);
-        (let env =
-           let uu____16729 = FStar_TypeChecker_Env.current_module tcenv in
-           get_env uu____16729 tcenv in
-         let uu____16730 =
-           let rec aux bindings =
-             match bindings with
-             | (FStar_Syntax_Syntax.Binding_var x)::rest ->
-                 let uu____16767 = aux rest in
-                 (match uu____16767 with
-                  | (out, rest1) ->
-                      let t =
-                        let uu____16795 =
-                          FStar_Syntax_Util.destruct_typ_as_formula
-                            x.FStar_Syntax_Syntax.sort in
-                        match uu____16795 with
-                        | FStar_Pervasives_Native.Some uu____16798 ->
-                            let uu____16799 =
-                              FStar_Syntax_Syntax.new_bv
-                                FStar_Pervasives_Native.None
-                                FStar_Syntax_Syntax.t_unit in
-                            FStar_Syntax_Util.refine uu____16799
-                              x.FStar_Syntax_Syntax.sort
-                        | uu____16800 -> x.FStar_Syntax_Syntax.sort in
-                      let t1 =
-                        norm_with_steps
-                          [FStar_TypeChecker_Env.Eager_unfolding;
-                          FStar_TypeChecker_Env.Beta;
-                          FStar_TypeChecker_Env.Simplify;
-                          FStar_TypeChecker_Env.Primops;
-                          FStar_TypeChecker_Env.EraseUniverses]
-                          env.FStar_SMTEncoding_Env.tcenv t in
-                      let uu____16804 =
-                        let uu____16807 =
-                          FStar_Syntax_Syntax.mk_binder
-                            (let uu___1752_16810 = x in
-                             {
-                               FStar_Syntax_Syntax.ppname =
-                                 (uu___1752_16810.FStar_Syntax_Syntax.ppname);
-                               FStar_Syntax_Syntax.index =
-                                 (uu___1752_16810.FStar_Syntax_Syntax.index);
-                               FStar_Syntax_Syntax.sort = t1
-                             }) in
-                        uu____16807 :: out in
-                      (uu____16804, rest1))
-             | uu____16815 -> ([], bindings) in
-           let uu____16822 = aux tcenv.FStar_TypeChecker_Env.gamma in
-           match uu____16822 with
-           | (closing, bindings) ->
-               let uu____16847 =
-                 FStar_Syntax_Util.close_forall_no_univs
-                   (FStar_List.rev closing) q in
-               (uu____16847, bindings) in
-         match uu____16730 with
-         | (q1, bindings) ->
-             let uu____16870 = encode_env_bindings env bindings in
-             (match uu____16870 with
-              | (env_decls, env1) ->
-                  ((let uu____16892 =
-                      ((FStar_TypeChecker_Env.debug tcenv
-                          FStar_Options.Medium)
-                         ||
-                         (FStar_All.pipe_left
-                            (FStar_TypeChecker_Env.debug tcenv)
-                            (FStar_Options.Other "SMTEncoding")))
-                        ||
-                        (FStar_All.pipe_left
-                           (FStar_TypeChecker_Env.debug tcenv)
-                           (FStar_Options.Other "SMTQuery")) in
-                    if uu____16892
-                    then
-                      let uu____16893 = FStar_Syntax_Print.term_to_string q1 in
-                      FStar_Util.print1 "Encoding query formula {: %s\n"
-                        uu____16893
-                    else ());
-                   (let uu____16895 =
-                      FStar_Util.record_time
-                        (fun uu____16909 ->
-                           FStar_SMTEncoding_EncodeTerm.encode_formula q1
-                             env1) in
-                    match uu____16895 with
-                    | ((phi, qdecls), ms) ->
-                        let uu____16931 =
-                          let uu____16936 =
-                            FStar_TypeChecker_Env.get_range tcenv in
-                          FStar_SMTEncoding_ErrorReporting.label_goals
-                            use_env_msg uu____16936 phi in
-                        (match uu____16931 with
-                         | (labels, phi1) ->
-                             let uu____16953 = encode_labels labels in
-                             (match uu____16953 with
-                              | (label_prefix, label_suffix) ->
-                                  let caption =
-                                    let uu____16989 =
-                                      FStar_Options.log_queries () in
-                                    if uu____16989
-                                    then
-                                      let uu____16992 =
-                                        let uu____16993 =
-                                          let uu____16994 =
-                                            FStar_Syntax_Print.term_to_string
-                                              q1 in
-                                          Prims.op_Hat
-                                            "Encoding query formula : "
-                                            uu____16994 in
-                                        FStar_SMTEncoding_Term.Caption
-                                          uu____16993 in
-                                      [uu____16992]
-                                    else [] in
-                                  let query_prelude =
-                                    let uu____16999 =
-                                      let uu____17000 =
-                                        let uu____17001 =
-                                          let uu____17004 =
-                                            FStar_All.pipe_right label_prefix
-                                              FStar_SMTEncoding_Term.mk_decls_trivial in
-                                          let uu____17011 =
-                                            let uu____17014 =
-                                              FStar_All.pipe_right caption
-                                                FStar_SMTEncoding_Term.mk_decls_trivial in
-                                            FStar_List.append qdecls
-                                              uu____17014 in
-                                          FStar_List.append uu____17004
-                                            uu____17011 in
-                                        FStar_List.append env_decls
-                                          uu____17001 in
-                                      FStar_All.pipe_right uu____17000
-                                        (recover_caching_and_update_env env1) in
-                                    FStar_All.pipe_right uu____16999
-                                      FStar_SMTEncoding_Term.decls_list_of in
-                                  let qry =
-                                    let uu____17024 =
-                                      let uu____17031 =
-                                        FStar_SMTEncoding_Util.mkNot phi1 in
-                                      let uu____17032 =
-                                        FStar_SMTEncoding_Env.varops.FStar_SMTEncoding_Env.mk_unique
-                                          "@query" in
-                                      (uu____17031,
-                                        (FStar_Pervasives_Native.Some "query"),
-                                        uu____17032) in
-                                    FStar_SMTEncoding_Util.mkAssume
-                                      uu____17024 in
-                                  let suffix =
-                                    FStar_List.append
-                                      [FStar_SMTEncoding_Term.Echo "<labels>"]
-                                      (FStar_List.append label_suffix
-                                         [FStar_SMTEncoding_Term.Echo
-                                            "</labels>";
-                                         FStar_SMTEncoding_Term.Echo "Done!"]) in
-                                  ((let uu____17037 =
-                                      ((FStar_TypeChecker_Env.debug tcenv
-                                          FStar_Options.Medium)
-                                         ||
-                                         (FStar_All.pipe_left
-                                            (FStar_TypeChecker_Env.debug
-                                               tcenv)
-                                            (FStar_Options.Other
-                                               "SMTEncoding")))
-                                        ||
-                                        (FStar_All.pipe_left
-                                           (FStar_TypeChecker_Env.debug tcenv)
-                                           (FStar_Options.Other "SMTQuery")) in
-                                    if uu____17037
-                                    then
-                                      FStar_Util.print_string
-                                        "} Done encoding\n"
-                                    else ());
-                                   (let uu____17040 =
-                                      (((FStar_TypeChecker_Env.debug tcenv
-                                           FStar_Options.Medium)
-                                          ||
-                                          (FStar_All.pipe_left
-                                             (FStar_TypeChecker_Env.debug
-                                                tcenv)
-                                             (FStar_Options.Other
-                                                "SMTEncoding")))
-                                         ||
-                                         (FStar_All.pipe_left
-                                            (FStar_TypeChecker_Env.debug
-                                               tcenv)
-                                            (FStar_Options.Other "SMTQuery")))
-                                        ||
-                                        (FStar_All.pipe_left
-                                           (FStar_TypeChecker_Env.debug tcenv)
-                                           (FStar_Options.Other "Time")) in
-                                    if uu____17040
-                                    then
-                                      FStar_Util.print1
-                                        "Encoding took %sms\n"
-                                        (Prims.string_of_int ms)
-                                    else ());
-                                   (query_prelude, labels, qry, suffix))))))))
+        FStar_Errors.with_ctx "While encoding a query"
+          (fun uu____16757 ->
+             (let uu____16759 =
+                let uu____16760 = FStar_TypeChecker_Env.current_module tcenv in
+                FStar_Ident.string_of_lid uu____16760 in
+              FStar_SMTEncoding_Z3.query_logging.FStar_SMTEncoding_Z3.set_module_name
+                uu____16759);
+             (let env =
+                let uu____16762 = FStar_TypeChecker_Env.current_module tcenv in
+                get_env uu____16762 tcenv in
+              let uu____16763 =
+                let rec aux bindings =
+                  match bindings with
+                  | (FStar_Syntax_Syntax.Binding_var x)::rest ->
+                      let uu____16800 = aux rest in
+                      (match uu____16800 with
+                       | (out, rest1) ->
+                           let t =
+                             let uu____16828 =
+                               FStar_Syntax_Util.destruct_typ_as_formula
+                                 x.FStar_Syntax_Syntax.sort in
+                             match uu____16828 with
+                             | FStar_Pervasives_Native.Some uu____16831 ->
+                                 let uu____16832 =
+                                   FStar_Syntax_Syntax.new_bv
+                                     FStar_Pervasives_Native.None
+                                     FStar_Syntax_Syntax.t_unit in
+                                 FStar_Syntax_Util.refine uu____16832
+                                   x.FStar_Syntax_Syntax.sort
+                             | uu____16833 -> x.FStar_Syntax_Syntax.sort in
+                           let t1 =
+                             norm_with_steps
+                               [FStar_TypeChecker_Env.Eager_unfolding;
+                               FStar_TypeChecker_Env.Beta;
+                               FStar_TypeChecker_Env.Simplify;
+                               FStar_TypeChecker_Env.Primops;
+                               FStar_TypeChecker_Env.EraseUniverses]
+                               env.FStar_SMTEncoding_Env.tcenv t in
+                           let uu____16837 =
+                             let uu____16840 =
+                               FStar_Syntax_Syntax.mk_binder
+                                 (let uu___1753_16843 = x in
+                                  {
+                                    FStar_Syntax_Syntax.ppname =
+                                      (uu___1753_16843.FStar_Syntax_Syntax.ppname);
+                                    FStar_Syntax_Syntax.index =
+                                      (uu___1753_16843.FStar_Syntax_Syntax.index);
+                                    FStar_Syntax_Syntax.sort = t1
+                                  }) in
+                             uu____16840 :: out in
+                           (uu____16837, rest1))
+                  | uu____16848 -> ([], bindings) in
+                let uu____16855 = aux tcenv.FStar_TypeChecker_Env.gamma in
+                match uu____16855 with
+                | (closing, bindings) ->
+                    let uu____16880 =
+                      FStar_Syntax_Util.close_forall_no_univs
+                        (FStar_List.rev closing) q in
+                    (uu____16880, bindings) in
+              match uu____16763 with
+              | (q1, bindings) ->
+                  let uu____16901 = encode_env_bindings env bindings in
+                  (match uu____16901 with
+                   | (env_decls, env1) ->
+                       ((let uu____16921 =
+                           ((FStar_TypeChecker_Env.debug tcenv
+                               FStar_Options.Medium)
+                              ||
+                              (FStar_All.pipe_left
+                                 (FStar_TypeChecker_Env.debug tcenv)
+                                 (FStar_Options.Other "SMTEncoding")))
+                             ||
+                             (FStar_All.pipe_left
+                                (FStar_TypeChecker_Env.debug tcenv)
+                                (FStar_Options.Other "SMTQuery")) in
+                         if uu____16921
+                         then
+                           let uu____16922 =
+                             FStar_Syntax_Print.term_to_string q1 in
+                           FStar_Util.print1 "Encoding query formula {: %s\n"
+                             uu____16922
+                         else ());
+                        (let uu____16924 =
+                           FStar_Util.record_time
+                             (fun uu____16938 ->
+                                FStar_SMTEncoding_EncodeTerm.encode_formula
+                                  q1 env1) in
+                         match uu____16924 with
+                         | ((phi, qdecls), ms) ->
+                             let uu____16958 =
+                               let uu____16963 =
+                                 FStar_TypeChecker_Env.get_range tcenv in
+                               FStar_SMTEncoding_ErrorReporting.label_goals
+                                 use_env_msg uu____16963 phi in
+                             (match uu____16958 with
+                              | (labels, phi1) ->
+                                  let uu____16978 = encode_labels labels in
+                                  (match uu____16978 with
+                                   | (label_prefix, label_suffix) ->
+                                       let caption =
+                                         let uu____17012 =
+                                           FStar_Options.log_queries () in
+                                         if uu____17012
+                                         then
+                                           let uu____17015 =
+                                             let uu____17016 =
+                                               let uu____17017 =
+                                                 FStar_Syntax_Print.term_to_string
+                                                   q1 in
+                                               Prims.op_Hat
+                                                 "Encoding query formula : "
+                                                 uu____17017 in
+                                             FStar_SMTEncoding_Term.Caption
+                                               uu____17016 in
+                                           [uu____17015]
+                                         else [] in
+                                       let query_prelude =
+                                         let uu____17022 =
+                                           let uu____17023 =
+                                             let uu____17024 =
+                                               let uu____17027 =
+                                                 FStar_All.pipe_right
+                                                   label_prefix
+                                                   FStar_SMTEncoding_Term.mk_decls_trivial in
+                                               let uu____17034 =
+                                                 let uu____17037 =
+                                                   FStar_All.pipe_right
+                                                     caption
+                                                     FStar_SMTEncoding_Term.mk_decls_trivial in
+                                                 FStar_List.append qdecls
+                                                   uu____17037 in
+                                               FStar_List.append uu____17027
+                                                 uu____17034 in
+                                             FStar_List.append env_decls
+                                               uu____17024 in
+                                           FStar_All.pipe_right uu____17023
+                                             (recover_caching_and_update_env
+                                                env1) in
+                                         FStar_All.pipe_right uu____17022
+                                           FStar_SMTEncoding_Term.decls_list_of in
+                                       let qry =
+                                         let uu____17047 =
+                                           let uu____17054 =
+                                             FStar_SMTEncoding_Util.mkNot
+                                               phi1 in
+                                           let uu____17055 =
+                                             FStar_SMTEncoding_Env.varops.FStar_SMTEncoding_Env.mk_unique
+                                               "@query" in
+                                           (uu____17054,
+                                             (FStar_Pervasives_Native.Some
+                                                "query"), uu____17055) in
+                                         FStar_SMTEncoding_Util.mkAssume
+                                           uu____17047 in
+                                       let suffix =
+                                         FStar_List.append
+                                           [FStar_SMTEncoding_Term.Echo
+                                              "<labels>"]
+                                           (FStar_List.append label_suffix
+                                              [FStar_SMTEncoding_Term.Echo
+                                                 "</labels>";
+                                              FStar_SMTEncoding_Term.Echo
+                                                "Done!"]) in
+                                       ((let uu____17060 =
+                                           ((FStar_TypeChecker_Env.debug
+                                               tcenv FStar_Options.Medium)
+                                              ||
+                                              (FStar_All.pipe_left
+                                                 (FStar_TypeChecker_Env.debug
+                                                    tcenv)
+                                                 (FStar_Options.Other
+                                                    "SMTEncoding")))
+                                             ||
+                                             (FStar_All.pipe_left
+                                                (FStar_TypeChecker_Env.debug
+                                                   tcenv)
+                                                (FStar_Options.Other
+                                                   "SMTQuery")) in
+                                         if uu____17060
+                                         then
+                                           FStar_Util.print_string
+                                             "} Done encoding\n"
+                                         else ());
+                                        (let uu____17063 =
+                                           (((FStar_TypeChecker_Env.debug
+                                                tcenv FStar_Options.Medium)
+                                               ||
+                                               (FStar_All.pipe_left
+                                                  (FStar_TypeChecker_Env.debug
+                                                     tcenv)
+                                                  (FStar_Options.Other
+                                                     "SMTEncoding")))
+                                              ||
+                                              (FStar_All.pipe_left
+                                                 (FStar_TypeChecker_Env.debug
+                                                    tcenv)
+                                                 (FStar_Options.Other
+                                                    "SMTQuery")))
+                                             ||
+                                             (FStar_All.pipe_left
+                                                (FStar_TypeChecker_Env.debug
+                                                   tcenv)
+                                                (FStar_Options.Other "Time")) in
+                                         if uu____17063
+                                         then
+                                           FStar_Util.print1
+                                             "Encoding took %sms\n"
+                                             (Prims.string_of_int ms)
+                                         else ());
+                                        (query_prelude, labels, qry, suffix)))))))))
