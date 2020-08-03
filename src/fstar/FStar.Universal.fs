@@ -448,7 +448,9 @@ let tc_one_file_for_ide
     * TcEnv.env_t
     =
     let env = env_of_tcenv env in
-    let tc_result, _, env = tc_one_file env pre_fn fn parsing_data in
+    let tc_result, _, env = Errors.with_ctx ("While checking dependency " ^ fn) (fun () ->
+                              tc_one_file env pre_fn fn parsing_data)
+    in
     tc_result, (tcenv_of_uenv env)
 
 (***********************************************************************)
