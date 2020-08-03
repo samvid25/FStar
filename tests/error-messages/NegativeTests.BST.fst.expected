@@ -5,7 +5,6 @@ FStar.Pervasives.Native.option (NegativeTests.BST.tree 2)
     (None? (FStar.Pervasives.Native.None) <==> 1 = 0) }; got type FStar.Pervasives.Native.option (NegativeTests.BST.tree 2); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
 > While typechecking the top-level declaration `let bad_node_1`
 > While typechecking the top-level declaration `[@@expect_failure] let bad_node_1`
-> While checking module NegativeTests.BST
   (see also NegativeTests.BST.fst(27,37-27,48))
 >>]
 >> Got issues: [
@@ -15,7 +14,6 @@ FStar.Pervasives.Native.option (NegativeTests.BST.tree (l + 1))
     (None? (FStar.Pervasives.Native.Some t) <==> l = l) }; got type FStar.Pervasives.Native.option (NegativeTests.BST.tree (l + 1)); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
 > While typechecking the top-level declaration `let bad_node_2`
 > While typechecking the top-level declaration `[@@expect_failure] let bad_node_2`
-> While checking module NegativeTests.BST
   (see also NegativeTests.BST.fst(27,36-27,58))
 >>]
 >> Got issues: [
@@ -25,7 +23,6 @@ FStar.Pervasives.Native.option (NegativeTests.BST.tree (l + 1))
     (None? (FStar.Pervasives.Native.Some t1) <==> l + 1 = l) }; got type FStar.Pervasives.Native.option (NegativeTests.BST.tree (l + 1)); The SMT solver could not prove the query, try to spell your proof in more detail or increase fuel/ifuel
 > While typechecking the top-level declaration `let bad_node_3`
 > While typechecking the top-level declaration `[@@expect_failure] let bad_node_3`
-> While checking module NegativeTests.BST
   (see also NegativeTests.BST.fst(27,37-27,48))
 >>]
 Verified module: NegativeTests.BST
