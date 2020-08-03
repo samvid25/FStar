@@ -1027,13 +1027,11 @@ let finish_partial_modul (loading_from_cache:bool) (iface_exists:bool) (en:env) 
   m, env
 
 let tc_modul (env0:env) (m:modul) (iface_exists:bool) :(modul * env) =
-Errors.with_ctx (BU.format1 "While checking module %s" (string_of_lid m.name)) (fun () ->
   let msg = "Internals for " ^ string_of_lid m.name in
   //AR: push env, this will also push solver, and then finish_partial_modul will do the pop
   let env0 = push_context env0 msg in
   let modul, env = tc_partial_modul env0 m in
   finish_partial_modul false iface_exists env modul
-)
 
 let load_checked_module (en:env) (m:modul) :env =
   //This function tries to very carefully mimic the effect of the environment

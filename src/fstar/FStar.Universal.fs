@@ -368,7 +368,15 @@ let tc_one_file
                  BU.format1 "Cross-module inlining expects all modules to be checked first; %s was not checked"
                             fn);
 
-        let tc_result, mllib, env = tc_source_file () in
+        let tc_result, mllib, env =
+          (* If it's a dependency, i.e. it wasn't given in the CLI
+           * arguments, then add an error context so failures in dependencies
+           * are made clear. *)
+          if Options.should_check_file fn
+          then tc_source_file ()
+          else Errors.with_ctx ("While checking dependency " ^ fn)
+                 (fun () -> tc_source_file ())
+        in
 
         if FStar.Errors.get_err_count() = 0
         && (Options.lax()  //we'll write out a .checked.lax file
