@@ -393,24 +393,29 @@ let (load_parsing_data_from_cache :
     FStar_Parser_Dep.parsing_data FStar_Pervasives_Native.option)
   =
   fun file_name ->
-    let cache_file =
-      try
-        (fun uu___195_1155 ->
-           match () with
-           | () ->
-               let uu____1158 = FStar_Parser_Dep.cache_file_name file_name in
-               FStar_All.pipe_right uu____1158
-                 (fun uu____1161 -> FStar_Pervasives_Native.Some uu____1161))
-          ()
-      with | uu___194_1163 -> FStar_Pervasives_Native.None in
-    match cache_file with
-    | FStar_Pervasives_Native.None -> FStar_Pervasives_Native.None
-    | FStar_Pervasives_Native.Some cache_file1 ->
-        let uu____1169 = load_checked_file file_name cache_file1 in
-        (match uu____1169 with
-         | (uu____1172, FStar_Util.Inl msg) -> FStar_Pervasives_Native.None
-         | (uu____1178, FStar_Util.Inr data) ->
-             FStar_Pervasives_Native.Some data)
+    FStar_Errors.with_ctx
+      (Prims.op_Hat "While loading parsing data from " file_name)
+      (fun uu____1152 ->
+         let cache_file =
+           try
+             (fun uu___196_1160 ->
+                match () with
+                | () ->
+                    let uu____1163 =
+                      FStar_Parser_Dep.cache_file_name file_name in
+                    FStar_All.pipe_right uu____1163
+                      (fun uu____1166 ->
+                         FStar_Pervasives_Native.Some uu____1166)) ()
+           with | uu___195_1168 -> FStar_Pervasives_Native.None in
+         match cache_file with
+         | FStar_Pervasives_Native.None -> FStar_Pervasives_Native.None
+         | FStar_Pervasives_Native.Some cache_file1 ->
+             let uu____1174 = load_checked_file file_name cache_file1 in
+             (match uu____1174 with
+              | (uu____1177, FStar_Util.Inl msg) ->
+                  FStar_Pervasives_Native.None
+              | (uu____1183, FStar_Util.Inr data) ->
+                  FStar_Pervasives_Native.Some data))
 let (load_module_from_cache :
   FStar_Extraction_ML_UEnv.uenv ->
     Prims.string -> tc_result FStar_Pervasives_Native.option)
@@ -418,75 +423,83 @@ let (load_module_from_cache :
   let already_failed = FStar_Util.mk_ref false in
   fun env ->
     fun fn ->
-      let load_it fn1 uu____1211 =
-        let cache_file = FStar_Parser_Dep.cache_file_name fn1 in
-        let fail msg cache_file1 =
-          let suppress_warning =
-            (FStar_Options.should_verify_file fn1) ||
-              (FStar_ST.op_Bang already_failed) in
-          if Prims.op_Negation suppress_warning
-          then
-            (FStar_ST.op_Colon_Equals already_failed true;
-             (let uu____1238 =
-                let uu____1239 =
-                  FStar_Range.mk_pos Prims.int_zero Prims.int_zero in
-                let uu____1240 =
-                  FStar_Range.mk_pos Prims.int_zero Prims.int_zero in
-                FStar_Range.mk_range fn1 uu____1239 uu____1240 in
-              let uu____1241 =
-                let uu____1246 =
-                  FStar_Util.format3
-                    "Unable to load %s since %s; will recheck %s (suppressing this warning for further modules)"
-                    cache_file1 msg fn1 in
-                (FStar_Errors.Warning_CachedFile, uu____1246) in
-              FStar_Errors.log_issue uu____1238 uu____1241))
-          else () in
-        let uu____1248 =
-          let uu____1253 =
-            let uu____1254 = FStar_Extraction_ML_UEnv.tcenv_of_uenv env in
-            FStar_TypeChecker_Env.dep_graph uu____1254 in
-          load_checked_file_with_tc_result uu____1253 fn1 cache_file in
-        match uu____1248 with
-        | FStar_Util.Inl msg ->
-            (fail msg cache_file; FStar_Pervasives_Native.None)
-        | FStar_Util.Inr tc_result1 ->
-            ((let uu____1261 =
-                FStar_Options.debug_at_level_no_module
-                  (FStar_Options.Other "CheckedFiles") in
-              if uu____1261
-              then
-                FStar_Util.print1
-                  "Successfully loaded module from checked file %s\n"
-                  cache_file
-              else ());
-             FStar_Pervasives_Native.Some tc_result1) in
-      let load_with_profiling fn1 =
-        FStar_Profiling.profile (load_it fn1) FStar_Pervasives_Native.None
-          "FStar.CheckedFiles" in
-      let i_fn_opt =
-        let uu____1276 =
-          let uu____1277 = FStar_Extraction_ML_UEnv.tcenv_of_uenv env in
-          FStar_TypeChecker_Env.dep_graph uu____1277 in
-        let uu____1278 = FStar_Parser_Dep.lowercase_module_name fn in
-        FStar_Parser_Dep.interface_of uu____1276 uu____1278 in
-      let uu____1279 =
-        (FStar_Parser_Dep.is_implementation fn) &&
-          (FStar_All.pipe_right i_fn_opt FStar_Util.is_some) in
-      if uu____1279
-      then
-        let i_fn = FStar_All.pipe_right i_fn_opt FStar_Util.must in
-        let i_tc = load_with_profiling i_fn in
-        match i_tc with
-        | FStar_Pervasives_Native.None -> FStar_Pervasives_Native.None
-        | FStar_Pervasives_Native.Some uu____1292 -> load_with_profiling fn
-      else load_with_profiling fn
+      FStar_Errors.with_ctx
+        (Prims.op_Hat "While loading module from file " fn)
+        (fun uu____1213 ->
+           let load_it fn1 uu____1226 =
+             let cache_file = FStar_Parser_Dep.cache_file_name fn1 in
+             let fail msg cache_file1 =
+               let suppress_warning =
+                 (FStar_Options.should_verify_file fn1) ||
+                   (FStar_ST.op_Bang already_failed) in
+               if Prims.op_Negation suppress_warning
+               then
+                 (FStar_ST.op_Colon_Equals already_failed true;
+                  (let uu____1253 =
+                     let uu____1254 =
+                       FStar_Range.mk_pos Prims.int_zero Prims.int_zero in
+                     let uu____1255 =
+                       FStar_Range.mk_pos Prims.int_zero Prims.int_zero in
+                     FStar_Range.mk_range fn1 uu____1254 uu____1255 in
+                   let uu____1256 =
+                     let uu____1261 =
+                       FStar_Util.format3
+                         "Unable to load %s since %s; will recheck %s (suppressing this warning for further modules)"
+                         cache_file1 msg fn1 in
+                     (FStar_Errors.Warning_CachedFile, uu____1261) in
+                   FStar_Errors.log_issue uu____1253 uu____1256))
+               else () in
+             let uu____1263 =
+               let uu____1268 =
+                 let uu____1269 = FStar_Extraction_ML_UEnv.tcenv_of_uenv env in
+                 FStar_TypeChecker_Env.dep_graph uu____1269 in
+               load_checked_file_with_tc_result uu____1268 fn1 cache_file in
+             match uu____1263 with
+             | FStar_Util.Inl msg ->
+                 (fail msg cache_file; FStar_Pervasives_Native.None)
+             | FStar_Util.Inr tc_result1 ->
+                 ((let uu____1276 =
+                     FStar_Options.debug_at_level_no_module
+                       (FStar_Options.Other "CheckedFiles") in
+                   if uu____1276
+                   then
+                     FStar_Util.print1
+                       "Successfully loaded module from checked file %s\n"
+                       cache_file
+                   else ());
+                  FStar_Pervasives_Native.Some tc_result1) in
+           let load_with_profiling fn1 =
+             FStar_Profiling.profile (load_it fn1)
+               FStar_Pervasives_Native.None "FStar.CheckedFiles" in
+           let i_fn_opt =
+             let uu____1291 =
+               let uu____1292 = FStar_Extraction_ML_UEnv.tcenv_of_uenv env in
+               FStar_TypeChecker_Env.dep_graph uu____1292 in
+             let uu____1293 = FStar_Parser_Dep.lowercase_module_name fn in
+             FStar_Parser_Dep.interface_of uu____1291 uu____1293 in
+           let uu____1294 =
+             (FStar_Parser_Dep.is_implementation fn) &&
+               (FStar_All.pipe_right i_fn_opt FStar_Util.is_some) in
+           if uu____1294
+           then
+             let i_fn = FStar_All.pipe_right i_fn_opt FStar_Util.must in
+             let i_tc = load_with_profiling i_fn in
+             match i_tc with
+             | FStar_Pervasives_Native.None -> FStar_Pervasives_Native.None
+             | FStar_Pervasives_Native.Some uu____1307 ->
+                 load_with_profiling fn
+           else load_with_profiling fn)
 let (store_values_to_cache :
   Prims.string ->
     checked_file_entry_stage1 -> checked_file_entry_stage2 -> unit)
   =
   fun cache_file ->
     fun stage1 ->
-      fun stage2 -> FStar_Util.save_2values_to_file cache_file stage1 stage2
+      fun stage2 ->
+        FStar_Errors.with_ctx
+          (Prims.op_Hat "While writing checked file " cache_file)
+          (fun uu____1325 ->
+             FStar_Util.save_2values_to_file cache_file stage1 stage2)
 let (store_module_to_cache :
   FStar_Extraction_ML_UEnv.uenv ->
     Prims.string -> FStar_Parser_Dep.parsing_data -> tc_result -> unit)
@@ -495,49 +508,49 @@ let (store_module_to_cache :
     fun fn ->
       fun parsing_data ->
         fun tc_result1 ->
-          let uu____1329 =
+          let uu____1346 =
             (FStar_Options.cache_checked_modules ()) &&
-              (let uu____1331 = FStar_Options.cache_off () in
-               Prims.op_Negation uu____1331) in
-          if uu____1329
+              (let uu____1348 = FStar_Options.cache_off () in
+               Prims.op_Negation uu____1348) in
+          if uu____1346
           then
             let cache_file = FStar_Parser_Dep.cache_file_name fn in
             let digest =
-              let uu____1344 =
-                let uu____1345 = FStar_Extraction_ML_UEnv.tcenv_of_uenv env in
-                FStar_TypeChecker_Env.dep_graph uu____1345 in
-              hash_dependences uu____1344 fn in
+              let uu____1361 =
+                let uu____1362 = FStar_Extraction_ML_UEnv.tcenv_of_uenv env in
+                FStar_TypeChecker_Env.dep_graph uu____1362 in
+              hash_dependences uu____1361 fn in
             match digest with
             | FStar_Util.Inr hashes ->
                 let tc_result2 =
-                  let uu___254_1360 = tc_result1 in
+                  let uu___257_1377 = tc_result1 in
                   {
-                    checked_module = (uu___254_1360.checked_module);
-                    mii = (uu___254_1360.mii);
-                    smt_decls = (uu___254_1360.smt_decls);
+                    checked_module = (uu___257_1377.checked_module);
+                    mii = (uu___257_1377.mii);
+                    smt_decls = (uu___257_1377.smt_decls);
                     tc_time = Prims.int_zero;
                     extraction_time = Prims.int_zero
                   } in
                 let stage1 =
-                  let uu____1362 = FStar_Util.digest_of_file fn in
+                  let uu____1379 = FStar_Util.digest_of_file fn in
                   {
                     version = cache_version_number;
-                    digest = uu____1362;
+                    digest = uu____1379;
                     parsing_data
                   } in
                 let stage2 = { deps_dig = hashes; tc_res = tc_result2 } in
                 store_values_to_cache cache_file stage1 stage2
             | FStar_Util.Inl msg ->
-                let uu____1371 =
-                  let uu____1372 =
+                let uu____1388 =
+                  let uu____1389 =
                     FStar_Range.mk_pos Prims.int_zero Prims.int_zero in
-                  let uu____1373 =
+                  let uu____1390 =
                     FStar_Range.mk_pos Prims.int_zero Prims.int_zero in
-                  FStar_Range.mk_range fn uu____1372 uu____1373 in
-                let uu____1374 =
-                  let uu____1379 =
+                  FStar_Range.mk_range fn uu____1389 uu____1390 in
+                let uu____1391 =
+                  let uu____1396 =
                     FStar_Util.format2 "%s was not written since %s"
                       cache_file msg in
-                  (FStar_Errors.Warning_FileNotWritten, uu____1379) in
-                FStar_Errors.log_issue uu____1371 uu____1374
+                  (FStar_Errors.Warning_FileNotWritten, uu____1396) in
+                FStar_Errors.log_issue uu____1388 uu____1391
           else ()

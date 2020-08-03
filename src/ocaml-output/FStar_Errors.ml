@@ -3022,16 +3022,19 @@ let with_ctx : 'a . Prims.string -> (unit -> 'a) -> 'a =
                 ()
             with
             | FStar_All.Failure msg ->
-                let uu____4507 =
-                  let uu____4508 =
-                    let uu____4517 =
-                      FStar_String.op_Hat "ASSERTION FAILURE: " msg in
-                    let uu____4518 = error_context.get () in
-                    (Fatal_AssertionFailure, uu____4517, uu____4518) in
-                  Err uu____4508 in
-                FStar_Util.Inl uu____4507
+                let ctx_str =
+                  let uu____4509 =
+                    let uu____4512 = error_context.get () in
+                    FStar_All.pipe_right uu____4512
+                      (FStar_List.map
+                         (fun s1 -> FStar_String.op_Hat "\n> " s1)) in
+                  FStar_All.pipe_right uu____4509 (FStar_String.concat "") in
+                let uu____4523 =
+                  let uu____4524 = FStar_String.op_Hat msg ctx_str in
+                  FStar_All.Failure uu____4524 in
+                FStar_Util.Inl uu____4523
             | ex -> FStar_Util.Inl ex) in
-       (let uu____4525 = error_context.pop () in ());
+       (let uu____4527 = error_context.pop () in ());
        (match r with
         | FStar_Util.Inr r1 -> r1
         | FStar_Util.Inl e -> FStar_Exn.raise e))
@@ -3044,19 +3047,19 @@ let catch_errors :
     FStar_ST.op_Colon_Equals current_handler newh;
     (let r =
        try
-         (fun uu___388_4573 ->
+         (fun uu___390_4575 ->
             match () with
             | () ->
-                let uu____4576 = f () in
-                FStar_Pervasives_Native.Some uu____4576) ()
+                let uu____4578 = f () in
+                FStar_Pervasives_Native.Some uu____4578) ()
        with
-       | uu___387_4579 ->
-           (err_exn uu___387_4579; FStar_Pervasives_Native.None) in
+       | uu___389_4581 ->
+           (err_exn uu___389_4581; FStar_Pervasives_Native.None) in
      let all_issues = newh.eh_report () in
      FStar_ST.op_Colon_Equals current_handler old;
-     (let uu____4593 =
+     (let uu____4595 =
         FStar_List.partition (fun i -> i.issue_level = EError) all_issues in
-      match uu____4593 with
+      match uu____4595 with
       | (errs, rest) -> (FStar_List.iter old.eh_add_one rest; (errs, r))))
 let (find_multiset_discrepancy :
   Prims.int Prims.list ->
@@ -3070,22 +3073,22 @@ let (find_multiset_discrepancy :
         match l with
         | [] -> []
         | hd::tl ->
-            let uu____4703 = collect tl in
-            (match uu____4703 with
+            let uu____4705 = collect tl in
+            (match uu____4705 with
              | [] -> [(hd, Prims.int_one)]
              | (h, n)::t ->
                  if h = hd
                  then (h, (n + Prims.int_one)) :: t
                  else (hd, Prims.int_one) :: (h, n) :: t) in
       let summ l = collect l in
-      let l11 = let uu____4783 = sort l1 in summ uu____4783 in
-      let l21 = let uu____4793 = sort l2 in summ uu____4793 in
+      let l11 = let uu____4785 = sort l1 in summ uu____4785 in
+      let l21 = let uu____4795 = sort l2 in summ uu____4795 in
       let rec aux l12 l22 =
         match (l12, l22) with
         | ([], []) -> FStar_Pervasives_Native.None
-        | ((e, n)::uu____4887, []) ->
+        | ((e, n)::uu____4889, []) ->
             FStar_Pervasives_Native.Some (e, n, Prims.int_zero)
-        | ([], (e, n)::uu____4922) ->
+        | ([], (e, n)::uu____4924) ->
             FStar_Pervasives_Native.Some (e, Prims.int_zero, n)
         | ((hd1, n1)::tl1, (hd2, n2)::tl2) ->
             if hd1 < hd2
